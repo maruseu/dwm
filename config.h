@@ -2,22 +2,32 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int gappx     = 15;        /* gaps between windows */
-static const unsigned int snap      = 12;       /* snap pixel */
+static const unsigned int gappx     = 14;        /* gaps between windows */
+static const unsigned int snap      = 5;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int vertpad            = 5;       /* vertical padding of bar */
+static const int sidepad            = 15;       /* horizontal padding of bar */
 static const char *fonts[]          = { "MotoyaLMaru:size=11" };
 static const char dmenufont[]       = "MotoyaLMaru:size=11";
-static const char col_gray1[]       = "#242327";
+static const char col_gray1[]       = "#000000";
+//static const char col_gray1[]       = "#242327";
 static const char col_gray2[]       = "#4E4B58";
 static const char col_gray3[]       = "#c3c9b0";
 static const char col_gray4[]       = "#eef1e7";
 //static const char col_cyan[]        = "#eef1e7";
 static const char col_cyan[]        = "#f1b0c1";
+static const unsigned int baralpha = 0xc0;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
+};
+static const unsigned int alphas[][3]      = {
+	/*               fg      bg        border     */
+	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
@@ -70,7 +80,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_b,             togglebar,      {0} },
 	{ MODKEY,             XK_j,             focusstack,     {.i = +1 } },
 	{ MODKEY,             XK_k,             focusstack,     {.i = -1 } },
-	{ MODKEY,             XK_i,             incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_o,             incnmaster,     {.i = +1 } },
 	{ MODKEY,             XK_o,             incnmaster,     {.i = -1 } },
 	{ MODKEY,             XK_h,             setmfact,       {.f = -0.05} },
 	{ MODKEY,             XK_l,             setmfact,       {.f = +0.05} },
@@ -82,7 +92,11 @@ static Key keys[] = {
 	{ MODKEY,             XK_bracketright,  focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,   XK_bracketleft,   tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,   XK_bracketright,  tagmon,         {.i = +1 } },
-	{ MODKEY,             XK_p,             spawn,          SHCMD("mpc prev") },
+	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
+	{ MODKEY|ControlMask, XK_l,             spawn,          SHCMD("maim /tmp/lock.png ; convert /tmp/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/lock.png ; i3lock -i /tmp/lock.png") },
+	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/clip.png ; maim -s /tmp/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/clip.png") },
+	{ MODKEY|ShiftMask,   XK_e,             spawn,          SHCMD("~/.scripts/logout.sh") },
+	{ MODKEY,             XK_p,             spawn,          SHCMD("mpc toggle") },
 	{ MODKEY,             XK_comma,         spawn,          SHCMD("mpc prev") },
 	{ MODKEY,             XK_period,        spawn,          SHCMD("mpc next") },
 	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc -e ncmpcpp") },
@@ -90,8 +104,8 @@ static Key keys[] = {
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
 	{ MODKEY,             XK_minus,         spawn,          SHCMD("vol") },
 	{ MODKEY,             XK_equal,         spawn,          SHCMD("vol inc") },
-	{ MODKEY|ShiftMask,   XK_minus,   setgaps,        {.i = -1 } },
-	{ MODKEY|ShiftMask,   XK_equal,  setgaps,        {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_minus,         setgaps,        {.i = -1 } },
+	{ MODKEY|ShiftMask,   XK_equal,         setgaps,        {.i = +1 } },
 	{ MODKEY,             XK_g,             setgaps,        {.i = 0  } },
 	{ MODKEY,             XK_0,             view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,   XK_0,             tag,            {.ui = ~0 } },
@@ -119,6 +133,8 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("vol inc") },
+	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("vol") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
