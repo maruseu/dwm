@@ -1,0 +1,12 @@
+#!/bin/bash
+while true
+do
+	dstatus
+done &
+
+~/.config/autostart &
+
+while true
+do
+	dwm
+done

@@ -2,23 +2,26 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int gappx     = 14;        /* gaps between windows */
 static const unsigned int snap      = 5;       /* snap pixel */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
+static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int vertpad            = 5;       /* vertical padding of bar */
+static const int vertpad            = 2;       /* vertical padding of bar */
 static const int sidepad            = 15;       /* horizontal padding of bar */
 static const char *fonts[]          = { "MotoyaLMaru:size=11" };
 static const char dmenufont[]       = "MotoyaLMaru:size=11";
 static const char col_gray1[]       = "#000000";
-//static const char col_gray1[]       = "#242327";
 static const char col_gray2[]       = "#4E4B58";
 static const char col_gray3[]       = "#c3c9b0";
 static const char col_gray4[]       = "#eef1e7";
-//static const char col_cyan[]        = "#eef1e7";
-static const char col_cyan[]        = "#f1b0c1";
+static const char col_cyan[]        = "#c3c9b0";
+//static const char col_cyan[]        = "#f1b0c1";
 static const unsigned int baralpha = 0xc0;
-static const unsigned int borderalpha = OPAQUE;
+static const unsigned int borderalpha = 0xc0;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -49,11 +52,23 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
+/* symbol     arrange function */
+{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
+
+/* functions */
+void shiftview(const Arg *arg) {
+	Arg shifted;
+	if(arg->i > 0) // left circular shift
+		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+	else // right circular shift
+		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+	view(&shifted);
+}
 
 /* key definitions */
 #define MODKEY Mod4Mask
@@ -68,8 +83,8 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
-static const char *animecmd[] = { "anime.sh", "-l", "20", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, "-x", "10", "-y", "2", "-w", "1346", NULL };
+static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, "-x", "10", "-y", "2", "-w", "1346", NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
 
 static Key keys[] = {
@@ -84,6 +99,13 @@ static Key keys[] = {
 	{ MODKEY,             XK_o,             incnmaster,     {.i = -1 } },
 	{ MODKEY,             XK_h,             setmfact,       {.f = -0.05} },
 	{ MODKEY,             XK_l,             setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,   XK_minus,         incrgaps,       {.i = -1 } },
+	{ MODKEY|ShiftMask,   XK_equal,         incrgaps,       {.i = +1 } },
+	{ MODKEY,             XK_g,             togglegaps,     {0} },
+	{ MODKEY|Mod1Mask,              XK_h,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|Mod1Mask,              XK_j,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|Mod1Mask,              XK_k,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|Mod1Mask,              XK_l,      setlayout,      {0} },
 	{ MODKEY,             XK_space,         zoom,           {0} },
 	{ MODKEY,             XK_Tab,           view,           {0} },
 	{ MODKEY|ShiftMask,   XK_q,             killclient,     {0} },
@@ -97,16 +119,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/clip.png ; maim -s /tmp/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/clip.png") },
 	{ MODKEY|ShiftMask,   XK_e,             spawn,          SHCMD("~/.scripts/logout.sh") },
 	{ MODKEY,             XK_p,             spawn,          SHCMD("mpc toggle") },
+	{ MODKEY|ShiftMask,   XK_comma,         spawn,          SHCMD("mpc volume -5") },
+	{ MODKEY|ShiftMask,   XK_period,        spawn,          SHCMD("mpc volume +5") },
 	{ MODKEY,             XK_comma,         spawn,          SHCMD("mpc prev") },
 	{ MODKEY,             XK_period,        spawn,          SHCMD("mpc next") },
 	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc -e ncmpcpp") },
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
-	{ MODKEY,             XK_minus,         spawn,          SHCMD("vol") },
-	{ MODKEY,             XK_equal,         spawn,          SHCMD("vol inc") },
-	{ MODKEY|ShiftMask,   XK_minus,         setgaps,        {.i = -1 } },
-	{ MODKEY|ShiftMask,   XK_equal,         setgaps,        {.i = +1 } },
-	{ MODKEY,             XK_g,             setgaps,        {.i = 0  } },
+	{ MODKEY,             XK_minus,         spawn,          SHCMD("dvol") },
+	{ MODKEY,             XK_equal,         spawn,          SHCMD("dvol inc") },
 	{ MODKEY,             XK_0,             view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,   XK_0,             tag,            {.ui = ~0 } },
 	TAGKEYS(              XK_1,                             0)
@@ -132,12 +153,18 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button2,        spawn,          SHCMD("mpc toggle") },
 	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("vol inc") },
 	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("vol") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkWinTitle,          0,              Button4,        shiftview,      {.i = -1} },
+	{ ClkWinTitle,          0,              Button5,        shiftview,      {.i = +1} },
+	{ ClkLtSymbol,          0,              Button4,        shiftview,      {.i = -1} },
+	{ ClkLtSymbol,          0,              Button5,        shiftview,      {.i = +1} },
+	{ ClkTagBar,            0,              Button4,        shiftview,      {.i = -1} },
+	{ ClkTagBar,            0,              Button5,        shiftview,      {.i = +1} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
