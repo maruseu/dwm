@@ -13,6 +13,12 @@ Optional:
 - MPC, pulseaudio and ibus for the statusbar
 - Compositor for transparency
 
+## Building dwm
+
+`make`
+`sudo make install`
+A script `build.sh` is included to quickly rebuild, install and restart dwm for when you're tweaking dwm.
+
 ## Running dwm
 
 Add the following line to your .xinitrc to start dwm using startx:
