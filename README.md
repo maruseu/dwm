@@ -22,4 +22,5 @@ Add the following line to your .xinitrc to start dwm using startx:
 ## Patches
 
 - Alpha
-- VanityGaps
+- Vanity gaps
+- Statusbar on all monitors
