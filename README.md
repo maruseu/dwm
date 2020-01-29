@@ -32,3 +32,4 @@ Add the following line to your .xinitrc to start dwm using startx:
 - Alpha
 - Vanity gaps
 - Statusbar on all monitors
+- Stacker
