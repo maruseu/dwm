@@ -2,12 +2,12 @@ s="」  「"
 
 echo $$ > /tmp/dwmStat.pid
 
-music=`mpc current -f "%artist% - %title%"`
+# music=`mpc current -f "%artist% - %title%"`
 date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
 # disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
 ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
 volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}'`
 
-xsetroot -name "「♪ $music$s$volume$s$ibus$s$date」"
+xsetroot -name "「$volume$s$ibus$s$date」"
 
 sleep 5

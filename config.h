@@ -16,7 +16,6 @@ static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#4E4B58";
 static const char col_gray3[]       = "#c3c9b0";
 static const char col_gray4[]       = "#ffffff";
-//static const char col_cyan[]        = "#c3c9b0";
 static const char col_cyan[]        = "#f1b0c1";
 static const unsigned int baralpha = 0x70;
 static const unsigned int borderalpha = 0xaa;
@@ -26,9 +25,9 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
 };
 static const unsigned int alphas[][3]      = {
-	/*               fg      bg        border     */
-	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, borderalpha, borderalpha },
+	/*               fg         bg            border     */
+	[SchemeNorm] = { OPAQUE,    baralpha,      borderalpha },
+	[SchemeSel]  = { OPAQUE,    borderalpha,   borderalpha },
 };
 
 /* tagging */
@@ -41,7 +40,8 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+//	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+//	{ NULL,       NULL,       "Music",    0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -50,9 +50,9 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
-/* symbol     arrange function */
-{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	/* symbol     arrange function */
+	{ "[]=",      tile },    /* first entry is default */
+	{ "<>>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
 
@@ -70,6 +70,9 @@ void shiftview(const Arg *arg) {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define STACKKEYS(MOD,ACTION) \
+	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
+	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, 
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -87,28 +90,6 @@ static const char *termcmd[]  = { "urxvtc", NULL };
 
 static Key keys[] = {
 	/* modifier           key               function        argument */
-	{ MODKEY,             XK_d,             spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,   XK_a,             spawn,          {.v = animecmd } },
-	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,   XK_b,             togglebar,      {0} },
-	{ MODKEY,             XK_j,             focusstack,     {.i = +1 } },
-	{ MODKEY,             XK_k,             focusstack,     {.i = -1 } },
-	{ MODKEY|ShiftMask,   XK_o,             incnmaster,     {.i = +1 } },
-	{ MODKEY,             XK_o,             incnmaster,     {.i = -1 } },
-	{ MODKEY,             XK_h,             setmfact,       {.f = -0.05} },
-	{ MODKEY,             XK_l,             setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,   XK_minus,         incrgaps,       {.i = -1 } },
-	{ MODKEY|ShiftMask,   XK_equal,         incrgaps,       {.i = +1 } },
-	{ MODKEY,             XK_g,             togglegaps,     {0} },
-	{ MODKEY,             XK_space,         zoom,           {0} },
-	{ MODKEY,             XK_Tab,           view,           {0} },
-	{ MODKEY|ShiftMask,   XK_q,             killclient,     {0} },
-	{ MODKEY|ShiftMask,   XK_space,         togglefloating, {0} },
-	{ MODKEY,             XK_bracketleft,   focusmon,       {.i = -1 } },
-	{ MODKEY,             XK_bracketright,  focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,   XK_bracketleft,   tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,   XK_bracketright,  tagmon,         {.i = +1 } },
-	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
 	{ MODKEY|ControlMask, XK_l,             spawn,          SHCMD("maim /tmp/lock.png ; convert /tmp/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/lock.png ; i3lock -i /tmp/lock.png") },
 	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/clip.png ; maim -s /tmp/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/clip.png") },
 	{ MODKEY|ShiftMask,   XK_e,             spawn,          SHCMD("~/.scripts/logout.sh") },
@@ -117,15 +98,31 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_period,        spawn,          SHCMD("mpc volume +5") },
 	{ MODKEY,             XK_comma,         spawn,          SHCMD("mpc prev") },
 	{ MODKEY,             XK_period,        spawn,          SHCMD("mpc next") },
-	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc -e ncmpcpp") },
+	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc --title Music -e ncmpcpp") },
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
+	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
 	{ MODKEY,             XK_minus,         spawn,          SHCMD("dvol") },
 	{ MODKEY,             XK_equal,         spawn,          SHCMD("dvol inc") },
-		{ MODKEY|Mod1Mask,    XK_h,             setlayout,      {.v = &layouts[0]} },
-		{ MODKEY|Mod1Mask,    XK_j,             setlayout,      {.v = &layouts[1]} },
-		{ MODKEY|Mod1Mask,    XK_k,             setlayout,      {.v = &layouts[2]} },
-		{ MODKEY|Mod1Mask,    XK_l,             setlayout,      {0} },
+	{ MODKEY,             XK_d,             spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,   XK_a,             spawn,          {.v = animecmd } },
+	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,   XK_minus,         incrgaps,       {.i = -1 } },
+	{ MODKEY|ShiftMask,   XK_equal,         incrgaps,       {.i = +1 } },
+	{ MODKEY,             XK_g,             togglegaps,     {0} },
+	{ MODKEY,             XK_b,             togglebar,      {0} },
+	{ MODKEY,             XK_o,             incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_o,             incnmaster,     {.i = -1 } },
+	{ MODKEY,             XK_h,             setmfact,       {.f = -0.05} },
+	{ MODKEY,             XK_l,             setmfact,       {.f = +0.05} },
+	{ MODKEY,             XK_space,         zoom,           {0} },
+	{ MODKEY,             XK_Tab,           view,           {0} },
+	{ MODKEY|ShiftMask,   XK_q,             killclient,     {0} },
+	{ MODKEY|ShiftMask,   XK_space,         togglefloating, {0} },
+	{ MODKEY,             XK_bracketleft,   focusmon,       {.i = -1 } },
+	{ MODKEY,             XK_bracketright,  focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_bracketleft,   tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,   XK_bracketright,  tagmon,         {.i = +1 } },
 	{ MODKEY,             XK_0,             view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,   XK_0,             tag,            {.ui = ~0 } },
 	TAGKEYS(              XK_1,                             0)
@@ -137,7 +134,14 @@ static Key keys[] = {
 	TAGKEYS(              XK_7,                             6)
 	TAGKEYS(              XK_8,                             7)
 	TAGKEYS(              XK_9,                             8)
+	STACKKEYS(            MODKEY,                           focus)
+	STACKKEYS(            MODKEY|ShiftMask,                 push)
 	{ MODKEY|ShiftMask,   XK_r,             quit,           {0} },
+
+		{ MODKEY|Mod1Mask,    XK_h,             setlayout,      {.v = &layouts[0]} },
+		{ MODKEY|Mod1Mask,    XK_j,             setlayout,      {.v = &layouts[1]} },
+		{ MODKEY|Mod1Mask,    XK_k,             setlayout,      {.v = &layouts[2]} },
+		{ MODKEY|Mod1Mask,    XK_l,             setlayout,      {0} },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_q,      incrigaps,      {.i = +1 } },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_w,      incrogaps,      {.i = +1 } },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_e,      incrihgaps,     {.i = +1 } },
@@ -145,10 +149,6 @@ static Key keys[] = {
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_t,      incrohgaps,     {.i = +1 } },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      incrovgaps,     {.i = +1 } },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_u,      defaultgaps,    {0} },
-//	{ MODKEY,             XK_t,             setlayout,      {.v = &layouts[0]} },
-//	{ MODKEY,             XK_f,             setlayout,      {.v = &layouts[1]} },
-//	{ MODKEY,             XK_m,             setlayout,      {.v = &layouts[2]} },
-//	{ MODKEY,             XK_space,         setlayout,      {0} },
 };
 
 /* button definitions */
