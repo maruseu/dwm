@@ -81,8 +81,8 @@ void shiftview(const Arg *arg) {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, "-x", "10", "-y", "2", "-w", "1346", NULL };
-static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, "-x", "10", "-y", "2", "-w", "1346", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
+static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
 
 static Key keys[] = {
@@ -100,10 +100,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_minus,         incrgaps,       {.i = -1 } },
 	{ MODKEY|ShiftMask,   XK_equal,         incrgaps,       {.i = +1 } },
 	{ MODKEY,             XK_g,             togglegaps,     {0} },
-	{ MODKEY|Mod1Mask,              XK_h,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|Mod1Mask,              XK_j,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|Mod1Mask,              XK_k,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|Mod1Mask,              XK_l,      setlayout,      {0} },
 	{ MODKEY,             XK_space,         zoom,           {0} },
 	{ MODKEY,             XK_Tab,           view,           {0} },
 	{ MODKEY|ShiftMask,   XK_q,             killclient,     {0} },
@@ -126,6 +122,10 @@ static Key keys[] = {
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
 	{ MODKEY,             XK_minus,         spawn,          SHCMD("dvol") },
 	{ MODKEY,             XK_equal,         spawn,          SHCMD("dvol inc") },
+		{ MODKEY|Mod1Mask,    XK_h,             setlayout,      {.v = &layouts[0]} },
+		{ MODKEY|Mod1Mask,    XK_j,             setlayout,      {.v = &layouts[1]} },
+		{ MODKEY|Mod1Mask,    XK_k,             setlayout,      {.v = &layouts[2]} },
+		{ MODKEY|Mod1Mask,    XK_l,             setlayout,      {0} },
 	{ MODKEY,             XK_0,             view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,   XK_0,             tag,            {.ui = ~0 } },
 	TAGKEYS(              XK_1,                             0)
@@ -138,6 +138,13 @@ static Key keys[] = {
 	TAGKEYS(              XK_8,                             7)
 	TAGKEYS(              XK_9,                             8)
 	{ MODKEY|ShiftMask,   XK_r,             quit,           {0} },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_q,      incrigaps,      {.i = +1 } },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_w,      incrogaps,      {.i = +1 } },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_e,      incrihgaps,     {.i = +1 } },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_r,      incrivgaps,     {.i = +1 } },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_t,      incrohgaps,     {.i = +1 } },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      incrovgaps,     {.i = +1 } },
+		{ MODKEY|Mod1Mask|ShiftMask,    XK_u,      defaultgaps,    {0} },
 //	{ MODKEY,             XK_t,             setlayout,      {.v = &layouts[0]} },
 //	{ MODKEY,             XK_f,             setlayout,      {.v = &layouts[1]} },
 //	{ MODKEY,             XK_m,             setlayout,      {.v = &layouts[2]} },
@@ -152,8 +159,8 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          SHCMD("mpc toggle") },
-	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("vol inc") },
-	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("vol") },
+	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("dvol inc") },
+	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("dvol") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
