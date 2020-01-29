@@ -1,3 +1,4 @@
+![dwm logo](dwm.png)
 # Marusa's dwm build
 
 dwm is an extremely fast, small, and dynamic window manager for X.
