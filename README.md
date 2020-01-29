@@ -16,7 +16,9 @@ Optional:
 ## Building dwm
 
 `make`
+
 `sudo make install`
+
 A script `build.sh` is included to quickly rebuild, install and restart dwm for when you're tweaking dwm.
 
 ## Running dwm
