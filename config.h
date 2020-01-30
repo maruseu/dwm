@@ -42,7 +42,9 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 //	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-//	{ NULL,       NULL,       "Music",    0,            1,           -1 },
+	{ "URxvt",    NULL,       "Music",    0,            1,           -1 },
+	{ "URxvt",    NULL,       "tremc",    0,            1,           -1 },
+	{ "Pavucontrol",NULL,     NULL,    0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -159,6 +161,7 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+	{ ClkStatusText,        0,              Button1,        spawn,          SHCMD("pavucontrol") },
 	{ ClkStatusText,        0,              Button2,        spawn,          SHCMD("mpc toggle") },
 	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("dvol inc") },
 	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("dvol") },
