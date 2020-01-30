@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$1" == "inc" ]
+then
+	amixer set Master 1%+
+else
+	amixer set Master 1%-
+fi
+pkill -P $(</tmp/dwmStat.pid) sleep

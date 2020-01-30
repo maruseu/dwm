@@ -1,0 +1,13 @@
+s="」  「"
+
+echo $$ > /tmp/dwmStat.pid
+
+# music=`mpc current -f "%artist% - %title%"`
+date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
+# disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
+ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
+volume=`amixer get Master | grep 'Mono: Playback' | awk '{print $4}' | tr -d '[' | tr -d ']'`
+
+xsetroot -name "「$volume$s$ibus$s$date」"
+
+sleep 5
