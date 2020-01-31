@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include "theme_nord.h"
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -10,26 +11,6 @@ static const unsigned int gappov    = 30;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "MotoyaLMaru:size=11" };
-static const char dmenufont[]       = "MotoyaLMaru:size=11";
-static const char col_gray1[]       = "#000000";
-static const char col_gray2[]       = "#4E4B58";
-static const char col_gray3[]       = "#c3c9b0";
-static const char col_gray4[]       = "#ffffff";
-static const char col_cyan[]       = "#f1c0b0";
-//static const char col_cyan[]        = "#f1b0c1";
-static const unsigned int baralpha = 0x70;
-static const unsigned int borderalpha = 0xaa;
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
-};
-static const unsigned int alphas[][3]      = {
-	/*               fg         bg            border     */
-	[SchemeNorm] = { OPAQUE,    baralpha,      borderalpha },
-	[SchemeSel]  = { OPAQUE,    borderalpha,   borderalpha },
-};
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -44,7 +25,7 @@ static const Rule rules[] = {
 //	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ "URxvt",    NULL,       "Music",    0,            1,           -1 },
 	{ "URxvt",    NULL,       "tremc",    0,            1,           -1 },
-	{ "Pavucontrol",NULL,     NULL,    0,            1,           -1 },
+	{ "Pavucontrol",NULL,     NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -58,18 +39,6 @@ static const Layout layouts[] = {
 	{ "<>>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
-
-/* functions */
-void shiftview(const Arg *arg) {
-	Arg shifted;
-	if(arg->i > 0) // left circular shift
-		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
-		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
-	else // right circular shift
-		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
-		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
-	view(&shifted);
-}
 
 /* key definitions */
 #define MODKEY Mod4Mask
@@ -85,10 +54,22 @@ void shiftview(const Arg *arg) {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+/* functions */
+void shiftview(const Arg *arg) {
+	Arg shifted;
+	if(arg->i > 0) // left circular shift
+		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+	else // right circular shift
+		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+	view(&shifted);
+}
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
-static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_dmbg, "-nf", col_fg, "-sb", col_dmhl, "-sf", col_bg, NULL };
+static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_dmbg, "-nf", col_fg, "-sb", col_dmhl, "-sf", col_bg, NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
 
 static Key keys[] = {
@@ -112,6 +93,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,   XK_minus,         incrgaps,       {.i = -1 } },
 	{ MODKEY|ShiftMask,   XK_equal,         incrgaps,       {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_g,             defaultgaps,    {0} },
 	{ MODKEY,             XK_g,             togglegaps,     {0} },
 	{ MODKEY,             XK_b,             togglebar,      {0} },
 	{ MODKEY,             XK_o,             incnmaster,     {.i = +1 } },
@@ -151,7 +133,6 @@ static Key keys[] = {
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_r,      incrivgaps,     {.i = +1 } },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_t,      incrohgaps,     {.i = +1 } },
 		{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      incrovgaps,     {.i = +1 } },
-		{ MODKEY|Mod1Mask|ShiftMask,    XK_u,      defaultgaps,    {0} },
 };
 
 /* button definitions */
@@ -168,15 +149,15 @@ static Button buttons[] = {
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkWinTitle,          0,              Button4,        shiftview,      {.i = -1} },
-	{ ClkWinTitle,          0,              Button5,        shiftview,      {.i = +1} },
-	{ ClkLtSymbol,          0,              Button4,        shiftview,      {.i = -1} },
-	{ ClkLtSymbol,          0,              Button5,        shiftview,      {.i = +1} },
-	{ ClkTagBar,            0,              Button4,        shiftview,      {.i = -1} },
-	{ ClkTagBar,            0,              Button5,        shiftview,      {.i = +1} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTagBar,            0,              Button4,        shiftview,      {.i = -1} },
+	{ ClkTagBar,            0,              Button5,        shiftview,      {.i = +1} },
+	{ ClkWinTitle,          0,              Button4,        shiftview,      {.i = -1} },
+	{ ClkWinTitle,          0,              Button5,        shiftview,      {.i = +1} },
+	{ ClkLtSymbol,          0,              Button4,        shiftview,      {.i = -1} },
+	{ ClkLtSymbol,          0,              Button5,        shiftview,      {.i = +1} },
 };
 
