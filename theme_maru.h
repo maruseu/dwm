@@ -1,6 +1,6 @@
 static const char *fonts[]          = { "MotoyaLMaru:size=11" };
 static const char dmenufont[]       = "MotoyaLMaru:size=11";
-static const char col_bg[]      = "#294f54";
+static const char col_bg[]      = "#000000";
 static const char col_dmbg[]    = "#294f54";
 static const char col_fg[]      = "#ffffff";
 static const char col_dmhl[]    = "#ffe6e1";
@@ -13,7 +13,7 @@ static const char *colors[][3]      = {
 };
 //*
 static const unsigned int alphas[][3]      = {
-	[SchemeNorm] = { OPAQUE, OPAQUE, OPAQUE },
+	[SchemeNorm] = { OPAQUE, alpha,  OPAQUE },
 	[SchemeSel]  = { OPAQUE, alpha,  OPAQUE },
 };//*/
 /*

@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */
-#include "theme_nord.h"
+#include "theme_maru.h"
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
