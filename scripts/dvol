@@ -5,4 +5,4 @@ then
 else
 	pactl set-sink-volume @DEFAULT_SINK@ -1%
 fi
-pkill -P $(</tmp/dwmStat.pid) sleep
+pkill -P $(</tmp/ram/dwmStat.pid) sleep

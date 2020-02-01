@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */
-#include "theme_maru.h"
+#include "theme_a.h"
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -74,8 +74,8 @@ static const char *termcmd[]  = { "urxvtc", NULL };
 
 static Key keys[] = {
 	/* modifier           key               function        argument */
-	{ MODKEY|ControlMask, XK_l,             spawn,          SHCMD("maim /tmp/lock.png ; convert /tmp/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/lock.png ; i3lock -i /tmp/lock.png") },
-	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/clip.png ; maim -s /tmp/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/clip.png") },
+	{ MODKEY|ControlMask, XK_l,             spawn,          SHCMD("maim /tmp/ram/lock.png ; convert /tmp/ram/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/ram/lock.png ; i3lock -i /tmp/ram/lock.png") },
+	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/ram/clip.png ; maim -s /tmp/ram/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/ram/clip.png") },
 	{ MODKEY|ShiftMask,   XK_e,             spawn,          SHCMD("~/.scripts/logout.sh") },
 	{ MODKEY,             XK_p,             spawn,          SHCMD("mpc toggle") },
 	{ MODKEY|ShiftMask,   XK_comma,         spawn,          SHCMD("mpc volume -5") },
