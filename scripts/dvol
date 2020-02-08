@@ -2,6 +2,9 @@
 if [ "$1" == "inc" ]
 then
 	pactl set-sink-volume @DEFAULT_SINK@ +1%
+elif [ "$1" == "toggle" ]
+then
+	pactl set-sink-mute @DEFAULT_SINK@ toggle
 else
 	pactl set-sink-volume @DEFAULT_SINK@ -1%
 fi

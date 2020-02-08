@@ -1,8 +1,8 @@
 /* See LICENSE file for copyright and license details. */
-#include "theme_a.h"
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+#include "theme_a.h"
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 5;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -11,8 +11,11 @@ static const unsigned int gappov    = 30;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int vertpad            = 5;       /* vertical padding of bar */
+static const int sidepad            = 15;       /* horizontal padding of bar */
 
 /* tagging */
+//static const char *tags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
@@ -35,8 +38,8 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "<>>",      NULL },    /* no layout function means floating behavior */
+	{ "×",      tile },    /* first entry is default */
+	{ "〇",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
 
@@ -68,8 +71,8 @@ void shiftview(const Arg *arg) {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_dmbg, "-nf", col_fg, "-sb", col_dmhl, "-sf", col_bg, NULL };
-static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_dmbg, "-nf", col_fg, "-sb", col_dmhl, "-sf", col_bg, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon , "-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf, "-x", "15","-y", "5","-w", "1336", NULL  };
+static const char *animecmd[] = { "anime.sh", "-i", "-l", "20", "-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf, "-x", "15","-y", "5","-w", "1336", NULL  };
 static const char *termcmd[]  = { "urxvtc", NULL };
 
 static Key keys[] = {
@@ -88,6 +91,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
 	{ MODKEY,             XK_minus,         spawn,          SHCMD("dvol") },
 	{ MODKEY,             XK_equal,         spawn,          SHCMD("dvol inc") },
+	{ MODKEY|ShiftMask,   XK_m,             spawn,          SHCMD("dvol toggle") },
 	{ MODKEY,             XK_d,             spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,   XK_a,             spawn,          {.v = animecmd } },
 	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },
