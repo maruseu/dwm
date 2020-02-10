@@ -6,53 +6,53 @@ c1=""; c2=""; c3=""; c4=""
 echo $$ > /tmp/ram/dwmStat.pid
 
 uVolume () {
-volume=""
-volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
-mute=`pactl list sinks | grep Mute | awk '{print $2}'`
-if [ $mute == "no" ]; then
-	if [ $volume -eq "0" ]; then
-		volume="$c1$s1$volume%$s2"
-	elif [ $volume -gt "100" ]; then
-		volume="$c4$s1$volume%$s2"
-	elif [ $volume -gt "20" ]; then
-		volume="$c2$s1$volume%$s2"
-	elif [ $volume -gt "0" ]; then
-		volume="$c3$s1$volume%$s2"
+	volume=""
+	volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
+	mute=`pactl list sinks | grep Mute | awk '{print $2}'`
+	if [ $mute == "no" ]; then
+		if [ $volume -eq "0" ]; then
+			volume="$c1$s1$volume%$s2"
+		elif [ $volume -gt "100" ]; then
+			volume="$c4$s1$volume%$s2"
+		elif [ $volume -gt "20" ]; then
+			volume="$c2$s1$volume%$s2"
+		elif [ $volume -gt "0" ]; then
+			volume="$c3$s1$volume%$s2"
+		fi
+	else
+		volume="$c1$s1"MUTE"$s2"
 	fi
-else
-	volume="$c1$s1"MUTE"$s2"
-fi
 
-updateRoot=1
+	updateRoot=1
 }
 iVolume=3
 
 uIbus () {
-ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
-ibus="$c2$s1$ibus$s2"
-updateRoot=1
+	ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
+	ibus="$c2$s1$ibus$s2"
+	updateRoot=1
 }
 iIbus=10
 
 uMpd () {
-mpd=`mpc current -f "$c3$s1%artist% - %title%$s2$c1"`
-updateRoot=1
+	mpd=`mpc current -f "$c3$s1%artist% - %title%$s2$c1"`
+	updateRoot=1
 }
 iMpd=60
 
 uDate () {
-date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
-date="$s1$date"
-updateRoot=1
+	date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
+	date="$s1$date"
+	updateRoot=1
 }
 iDate=30
 
-uDisks () {
-disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
-disks="$c2$s1$disks$s2"
-updateRoot=1
-}
-iDisks=30
+#uDisks () {
+#	disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
+#	disks="$c2$s1$disks$s2"
+#	updateRoot=1
+#}
+#iDisks=30
 
 trap "sVolume=1;" USR1
 trap "sMpd=1;"    USR2
@@ -96,14 +96,14 @@ while true; do
 		uDate
 	fi
 
-	if [ "$( expr $time % $iDisks )" == "0" ]; then
-		#printf "disks.."
-		uDisks
-	fi
+	#if [ "$( expr $time % $iDisks )" == "0" ]; then
+	#	#printf "disks.."
+	#	uDisks
+	#fi
 
 	if [ "$updateRoot" == "1" ]; then
 		#printf "ROOT NAME\n"
-		xsetroot -name "$mpd$volume$ibus$disks$date」"
+		xsetroot -name "$mpd$volume$ibus$date」"
 		updateRoot=0
 	fi
 
