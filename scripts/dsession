@@ -1,10 +1,8 @@
 #!/bin/bash
 mkdir /tmp/ram
 sudo mount -t tmpfs -o size=512M tmpfs /tmp/ram/
-while true
-do
-	dstatus
-done &
+
+dstatus &
 
 ~/.config/autostart &
 
