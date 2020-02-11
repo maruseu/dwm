@@ -1,30 +1,52 @@
-#!/bin/bash
+#!/bin/dash
+ps h -p $$ -o args='' | cut -f1 -d' '
 
 s1="   「 "; s2=" 」   "
 c1=""; c2=""; c3=""; c4=""
 
 echo $$ > /tmp/ram/dwmStat.pid
 
-uVolume () {
-	volume=""
-	volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
-	mute=`pactl list sinks | grep Mute | awk '{print $2}'`
-	if [ $mute == "no" ]; then
-		if [ $volume -eq "0" ]; then
-			volume="$c1$s1$volume%$s2"
-		elif [ $volume -gt "100" ]; then
-			volume="$c4$s1$volume%$s2"
-		elif [ $volume -gt "20" ]; then
-			volume="$c2$s1$volume%$s2"
-		elif [ $volume -gt "0" ]; then
-			volume="$c3$s1$volume%$s2"
+if which pactl; then
+	uVolume () {
+		volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
+		mute=`pactl list sinks | grep Mute | awk '{print $2}'`
+		if [ $mute = "no" ]; then
+			if [ "$volume" -eq "0" ]; then
+				volume="$c1$s1$volume%$s2"
+			elif [ "$volume" -gt "100" ]; then
+				volume="$c4$s1$volume%$s2"
+			elif [ "$volume" -gt "20" ]; then
+				volume="$c2$s1$volume%$s2"
+			elif [ "$volume" -gt "0" ]; then
+				volume="$c3$s1$volume%$s2"
+			fi
+		else
+			volume="$c1$s1"MUTE"$s2"
 		fi
-	else
-		volume="$c1$s1"MUTE"$s2"
-	fi
 
-	updateRoot=1
-}
+		updateRoot=1
+	}
+elif which amixer; then
+	uVolume () {
+		volume=`amixer get Master | grep 'Mono: Playback' | awk '{print $4}' | tr -d '[' | tr -d ']'`
+		mute=`pactl list sinks | grep Mute | awk '{print $2}'`
+		if [ $mute = "no" ]; then
+			if [ "$volume" -eq "0" ]; then
+				volume="$c1$s1$volume%$s2"
+			elif [ "$volume" -gt "100" ]; then
+				volume="$c4$s1$volume%$s2"
+			elif [ "$volume" -gt "20" ]; then
+				volume="$c2$s1$volume%$s2"
+			elif [ "$volume" -gt "0" ]; then
+				volume="$c3$s1$volume%$s2"
+			fi
+		else
+			volume="$c1$s1"MUTE"$s2"
+		fi
+
+		updateRoot=1
+	}
+fi
 iVolume=3
 
 uIbus () {
@@ -67,42 +89,42 @@ uVolume
 uIbus
 uMpd
 uDate
-uDisks
+#uDisks
 
 
 while true; do
 	time=`date +%S`
 
-	if [ "$( expr $time % $iVolume )" == "0" ] || [ $sVolume == "1" ]; then
-		#printf "volume.."
+	if [ "$( expr $time % $iVolume )" -eq "0" ] || [ $sVolume -eq "1" ]; then
+	#	printf "volume.."
 		uVolume
 		sVolume=0
 	fi
 
-	if [ "$( expr $time % $iIbus )" == "0" ] || [ $sIbus == "1" ]; then
-		#printf "ibus.."
+	if [ "$( expr $time % $iIbus )" -eq "0" ] || [ $sIbus -eq "1" ]; then
+	#	printf "ibus.."
 		uIbus
 		sIbus=0
 	fi
 
-	if [ "$( expr $time % $iMpd )" == "0" ] || [ $sMpd == "1" ]; then
-		#printf "mpd.."
+	if [ "$( expr $time % $iMpd )" -eq "0" ] || [ $sMpd -eq "1" ]; then
+	#	printf "mpd.."
 		uMpd
 		sMpd=0
 	fi
 
-	if [ "$( expr $time % $iDate )" == "0" ]; then
-		#printf "time.."
+	if [ "$( expr $time % $iDate )" -eq "0" ]; then
+	#	printf "time.."
 		uDate
 	fi
 
-	#if [ "$( expr $time % $iDisks )" == "0" ]; then
+	#if [[ "$( expr $time % $iDisks )" == "0" ]]; then
 	#	#printf "disks.."
 	#	uDisks
 	#fi
 
-	if [ "$updateRoot" == "1" ]; then
-		#printf "ROOT NAME\n"
+	if [ "$updateRoot" = "1" ]; then
+	#	printf "ROOT NAME\n"
 		xsetroot -name "$mpd$volume$ibus$date」"
 		updateRoot=0
 	fi

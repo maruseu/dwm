@@ -1,12 +1,13 @@
-#!/bin/bash
-if [ "$1" == "inc" ]
+#!/bin/dash
+if [ "$1" = "inc" ]
 then
 	pactl set-sink-volume @DEFAULT_SINK@ +1%
-elif [ "$1" == "toggle" ]
+elif [ "$1" = "toggle" ]
 then
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 else
 	pactl set-sink-volume @DEFAULT_SINK@ -1%
 fi
-kill -USR1 $(</tmp/ram/dwmStat.pid)
-pkill -P $(</tmp/ram/dwmStat.pid) sleep
+spid=`cat /tmp/ram/dwmStat.pid`
+kill -USR1 $spid
+pkill -P $spid sleep
