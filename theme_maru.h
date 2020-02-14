@@ -2,7 +2,7 @@
 #define FG "#ffffff"
 #define HL "#AAA595"
 #define DMBG "#2E3440"
-#define FONT "M+ 1p:style=bold:italic:size=11"
+#define FONT "M+ 1p:style=bold:italic:size=9"
 
 static const char *fonts[]      = { FONT };
 static const char dmenufont[]   = FONT;
@@ -13,15 +13,17 @@ static const char col_dmbg[]    = DMBG;
 static const char col_dmfg[]    = FG;
 static const char col_dmsb[]    = HL;
 static const char col_dmsf[]    = BG;
-static const char col_red[]     = "#613243";
-static const char col_blu[]     = "#3c4b74";
+static const char col_erro[]     = "#613243";
+static const char col_warn[]     = "#b58900";
+static const char col_info[]     = "#3c4b74";
 static const unsigned int alpha = 0x70;
 static const char *colors[][3]      = {
 	/*               fg      bg      border   */
 	[SchemeNorm]  =  { col_fg,   col_bg, col_bg  },
 	[SchemeSel]   =  { col_bg,   col_hl, col_dmbg},
-	[SchemeWarn]  =  { col_fg,   col_blu,col_red },
-	[SchemeUrgent]=	 { col_fg,   col_red,col_red },
+	[SchemeWarn]  =  { col_bg,   col_warn,col_dmbg },
+	[SchemeUrgent]=	 { col_bg,   col_erro,col_dmbg },
+	[SchemeInfo]=	 { col_fg,   col_info,col_dmbg },
 };
 
 static const unsigned int alphas[][3]      = {
@@ -29,4 +31,5 @@ static const unsigned int alphas[][3]      = {
 	[SchemeSel]   = { alpha, alpha, alpha  },
 	[SchemeWarn]  = { alpha, alpha, alpha  },
 	[SchemeUrgent]= { alpha, alpha, alpha  },
+	[SchemeInfo]  = { alpha, alpha, alpha  },
 };

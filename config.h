@@ -11,6 +11,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 5;       /* vertical padding of bar */
 static const int sidepad            = 15;       /* horizontal padding of bar */
+static const unsigned int statusoffset = 5 * 9;       /* number of color charactes "*" font width */
 
 /* tagging */
 static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
@@ -72,15 +73,19 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "12","-y", "5","-w", "1342", NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
 
 static const char *animecmd[] = { "/home/maruseu/.scripts/anime.sh", "-i", "-l", "20",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "12","-y", "5","-w", "1342", NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
 
 static const char *logoutcmd[]= { "/home/maruseu/.scripts/logout.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "12","-y", "5","-w", "1342", NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
+
+static const char *mpccmd[]  = { "/home/maruseu/.scripts/dmenu_mpc.sh", "-i",
+	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
+	"-x", "15","-y", "5","-w", "1336", NULL  };
 
 
 static Key keys[] = {
@@ -94,13 +99,14 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_period,        spawn,          SHCMD("mpc volume +5") },
 	{ MODKEY,             XK_comma,         spawn,          SHCMD("mpc prev") },
 	{ MODKEY,             XK_period,        spawn,          SHCMD("mpc next") },
-	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc --title Music -e ncmpcpp") },
+	//{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc --title Music -e ncmpcpp") },
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
 	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
 	{ MODKEY,             XK_minus,         spawn,          SHCMD("dvol") },
 	{ MODKEY,             XK_equal,         spawn,          SHCMD("dvol inc") },
 	{ MODKEY|ShiftMask,   XK_m,             spawn,          SHCMD("dvol toggle") },
+	{ MODKEY,             XK_m,             spawn,          {.v = mpccmd } },
 	{ MODKEY,             XK_d,             spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,   XK_a,             spawn,          {.v = animecmd } },
 	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },

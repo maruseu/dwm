@@ -1,8 +1,8 @@
 #!/bin/dash
 ps h -p $$ -o args='' | cut -f1 -d' '
 
-s1="   「 "; s2=" 」   "
-c1=""; c2=""; c3=""; c4=""
+s1=" 「 "; s2=" 」 "
+cn=""; cs=""; ci=""; cw=""; ce=""
 
 echo $$ > /tmp/ram/dwmStat.pid
 
@@ -12,16 +12,18 @@ if which pactl; then
 		mute=`pactl list sinks | grep Mute | awk '{print $2}'`
 		if [ $mute = "no" ]; then
 			if [ "$volume" -eq "0" ]; then
-				volume="$c1$s1$volume%$s2"
+				volume="$cn$s1$volume%$s2"
 			elif [ "$volume" -gt "100" ]; then
-				volume="$c4$s1$volume%$s2"
-			elif [ "$volume" -gt "20" ]; then
-				volume="$c2$s1$volume%$s2"
+				volume="$ce$s1$volume%$s2"
+			elif [ "$volume" -gt "60" ]; then
+				volume="$cs$s1$volume%$s2"
+			elif [ "$volume" -gt "30" ]; then
+				volume="$cw$s1$volume%$s2"
 			elif [ "$volume" -gt "0" ]; then
-				volume="$c3$s1$volume%$s2"
+				volume="$cw$s1$volume%$s2"
 			fi
 		else
-			volume="$c1$s1"MUTE"$s2"
+			volume="$cn$s1"MUTE"$s2"
 		fi
 
 		updateRoot=1
@@ -32,49 +34,62 @@ elif which amixer; then
 		mute=`pactl list sinks | grep Mute | awk '{print $2}'`
 		if [ $mute = "no" ]; then
 			if [ "$volume" -eq "0" ]; then
-				volume="$c1$s1$volume%$s2"
+				volume="$cn$s1$volume%$s2"
 			elif [ "$volume" -gt "100" ]; then
-				volume="$c4$s1$volume%$s2"
+				volume="$cw$s1$volume%$s2"
 			elif [ "$volume" -gt "20" ]; then
-				volume="$c2$s1$volume%$s2"
+				volume="$cs$s1$volume%$s2"
 			elif [ "$volume" -gt "0" ]; then
-				volume="$c3$s1$volume%$s2"
+				volume="$cw$s1$volume%$s2"
 			fi
 		else
-			volume="$c1$s1"MUTE"$s2"
+			volume="$cn$s1"MUTE"$s2"
 		fi
 
 		updateRoot=1
 	}
+else
+	volume="$cn"
 fi
 iVolume=3
 
 uIbus () {
 	ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
-	ibus="$c2$s1$ibus$s2"
+	ibus="$cs$s1$ibus$s2"
 	updateRoot=1
 }
 iIbus=10
 
 uMpd () {
-	mpd=`mpc current -f "$c3$s1%artist% - %title%$s2$c1"`
+	mpd=`mpc current -f "$ci$s1%artist% - %title%$s2"`
+	if [ -z "$mpd" ]; then
+		echo aaaaaaaaaaaaaaa
+		mpd="$cn"
+	fi
 	updateRoot=1
 }
 iMpd=60
 
 uDate () {
 	date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
-	date="$s1$date"
+	date="$cs$s1$date$s2"
 	updateRoot=1
 }
 iDate=30
 
-#uDisks () {
-#	disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
-#	disks="$c2$s1$disks$s2"
-#	updateRoot=1
-#}
-#iDisks=30
+uAnime () {
+	anime=`~/.scripts/animeChart2.lua panel`
+	anime="$cs$s1$anime$s2"
+	updateRoot=1
+}
+iAnime=1
+
+uDisks () {
+	disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
+	disks="$cs$s1$disks$s2"
+	updateRoot=1
+}
+iDisks=30
 
 trap "sVolume=1;" USR1
 trap "sMpd=1;"    USR2
@@ -89,43 +104,48 @@ uVolume
 uIbus
 uMpd
 uDate
-#uDisks
-
+uDisks
+#uAnime
 
 while true; do
 	time=`date +%S`
 
 	if [ "$( expr $time % $iVolume )" -eq "0" ] || [ $sVolume -eq "1" ]; then
-	#	printf "volume.."
+		printf "volume.."
 		uVolume
 		sVolume=0
 	fi
 
 	if [ "$( expr $time % $iIbus )" -eq "0" ] || [ $sIbus -eq "1" ]; then
-	#	printf "ibus.."
+		printf "ibus.."
 		uIbus
 		sIbus=0
 	fi
 
 	if [ "$( expr $time % $iMpd )" -eq "0" ] || [ $sMpd -eq "1" ]; then
-	#	printf "mpd.."
+		printf "mpd.."
 		uMpd
 		sMpd=0
 	fi
 
 	if [ "$( expr $time % $iDate )" -eq "0" ]; then
-	#	printf "time.."
+		printf "time.."
 		uDate
 	fi
 
-	#if [[ "$( expr $time % $iDisks )" == "0" ]]; then
-	#	#printf "disks.."
-	#	uDisks
-	#fi
+#	if [ "$( expr $time % $iAnime )" -eq "0" ]; then
+#		printf "anime.."
+#		uAnime
+#	fi
 
-	if [ "$updateRoot" = "1" ]; then
-	#	printf "ROOT NAME\n"
-		xsetroot -name "$mpd$volume$ibus$date」"
+	if [ "$( expr $time % $iDisks )" -eq "0" ]; then
+		printf "disks.."
+		uDisks
+	fi
+
+	if [ "$updateRoot" -eq "1" ]; then
+		printf "ROOT NAME\n"
+		xsetroot -name "$mpd$anime$disks$volume$ibus$date"
 		updateRoot=0
 	fi
 
