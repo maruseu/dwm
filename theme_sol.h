@@ -14,7 +14,7 @@
 #define BLUE      "#268bd2"
 #define CYAN      "#2aa198"
 #define GREEN     "#859900"
-#define FONT "M+ 1p:style=bold:italic:size=8"
+#define FONT "M+ 1p:style=bold:italic:size=9"
 
 static const char *fonts[]      = { FONT };
 static const char dmenufont[]   = FONT;
