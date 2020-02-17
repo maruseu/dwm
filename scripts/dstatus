@@ -63,7 +63,6 @@ iIbus=10
 uMpd () {
 	mpd=`mpc current -f "$ci$s1%artist% - %title%$s2"`
 	if [ -z "$mpd" ]; then
-		echo aaaaaaaaaaaaaaa
 		mpd="$cn"
 	fi
 	updateRoot=1
