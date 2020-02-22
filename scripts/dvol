@@ -2,11 +2,13 @@
 if [ "$1" = "inc" ]
 then
 	pactl set-sink-volume @DEFAULT_SINK@ +1%
+	pactl set-sink-mute @DEFAULT_SINK@ off
 elif [ "$1" = "toggle" ]
 then
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 else
 	pactl set-sink-volume @DEFAULT_SINK@ -1%
+	pactl set-sink-mute @DEFAULT_SINK@ off
 fi
 spid=`cat /tmp/ram/dwmStat.pid`
 kill -USR1 $spid

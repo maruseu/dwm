@@ -1,7 +1,7 @@
-#!/bin/dash
+#!/bin/sh
 ps h -p $$ -o args='' | cut -f1 -d' '
 
-s1=" 「 "; s2=" 」 "
+s1="   "; s2="   "
 cn=""; cs=""; ci=""; cw=""; ce=""
 
 echo $$ > /tmp/ram/dwmStat.pid
@@ -11,15 +11,15 @@ if which pactl; then
 		volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
 		mute=`pactl list sinks | grep Mute | awk '{print $2}'`
 		if [ $mute = "no" ]; then
-			if [ "$volume" -eq "0" ]; then
+			if [ "$volume" -eq 0 ]; then
 				volume="$cn$s1$volume%$s2"
-			elif [ "$volume" -gt "100" ]; then
+			elif [ "$volume" -gt 100 ]; then
 				volume="$ce$s1$volume%$s2"
-			elif [ "$volume" -gt "60" ]; then
+			elif [ "$volume" -ge 50 ]; then
 				volume="$cs$s1$volume%$s2"
-			elif [ "$volume" -gt "30" ]; then
+			elif [ "$volume" -gt 30 ]; then
 				volume="$cw$s1$volume%$s2"
-			elif [ "$volume" -gt "0" ]; then
+			elif [ "$volume" -gt 0 ]; then
 				volume="$cw$s1$volume%$s2"
 			fi
 		else
@@ -30,9 +30,9 @@ if which pactl; then
 	}
 elif which amixer; then
 	uVolume () {
-		volume=`amixer get Master | grep 'Mono: Playback' | awk '{print $4}' | tr -d '[' | tr -d ']'`
-		mute=`pactl list sinks | grep Mute | awk '{print $2}'`
-		if [ $mute = "no" ]; then
+		volume=`amixer get Master | grep 'Mono: Playback' | awk '{print $4}' | tr -d "[\[\]]" | tr -d '%'`
+		mute=`amixer get Master | grep "\[off\]"`
+		if [ -z $mute ]; then
 			if [ "$volume" -eq "0" ]; then
 				volume="$cn$s1$volume%$s2"
 			elif [ "$volume" -gt "100" ]; then
@@ -51,7 +51,19 @@ elif which amixer; then
 else
 	volume="$cn"
 fi
-iVolume=3
+iVolume=2
+
+uAcpi () {
+#	acpi=`acpi -b | tr "[, ]" "\n" | grep "%" | tr -d "%"`
+	acpi=`bar.lua $(echo "$(acpi -b | tr "[, ]" "\n" | grep "%" | tr -d "%") / 100" | bc -l)`
+	if acpi --ac-adapter | grep 'on-line' > /dev/null; then
+		acpi="$ci$s1▕$acpi▏$s2"
+	else
+		acpi="$cs$s1▕$acpi▏$s2"
+	fi
+	updateRoot=1
+}
+iAcpi=4
 
 uIbus () {
 	ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
@@ -69,6 +81,22 @@ uMpd () {
 }
 iMpd=60
 
+uWifi () {
+	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
+	if [ $wifi -ge 80 ]; then
+	    wifi="$s1▂▄▆█$s2"
+	elif [ $wifi -ge 60 ]; then
+	    wifi="$s1▂▄▆▁$s2"
+	elif [ $wifi -ge 40 ]; then
+	    wifi="$s1▂▄▁▁$s2"
+	elif [ $wifi -gt 0 ]; then
+	    wifi="$s1▂▁▁▁$s2"
+	fi
+	wifi="$cs$wifi"
+	updateRoot=1
+}
+iWifi=3
+
 uDate () {
 	date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
 	date="$cs$s1$date$s2"
@@ -84,7 +112,7 @@ uAnime () {
 iAnime=1
 
 uDisks () {
-	disks=`df -h | grep /dev/sd | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
+	disks=`df -h | grep /dev/sda1 | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
 	disks="$cs$s1$disks$s2"
 	updateRoot=1
 }
@@ -95,14 +123,17 @@ trap "sMpd=1;"    USR2
 trap "sIbus=1;"   RTMIN
 
 sVolume=0
+sAcpi=0
 sMpd=0
 sIbus=0
 
 
 uVolume
 uIbus
+uAcpi
 uMpd
 uDate
+uWifi
 uDisks
 #uAnime
 
@@ -115,6 +146,12 @@ while true; do
 		sVolume=0
 	fi
 
+	if [ "$( expr $time % $iAcpi )" -eq "0" ] || [ $sAcpi -eq "1" ]; then
+		printf "acpi.."
+		uAcpi
+		sAcpi=0
+	fi
+
 	if [ "$( expr $time % $iIbus )" -eq "0" ] || [ $sIbus -eq "1" ]; then
 		printf "ibus.."
 		uIbus
@@ -125,6 +162,11 @@ while true; do
 		printf "mpd.."
 		uMpd
 		sMpd=0
+	fi
+
+	if [ "$( expr $time % $iWifi )" -eq "0" ]; then
+		printf "wifi.."
+		uWifi
 	fi
 
 	if [ "$( expr $time % $iDate )" -eq "0" ]; then
@@ -144,7 +186,7 @@ while true; do
 
 	if [ "$updateRoot" -eq "1" ]; then
 		printf "ROOT NAME\n"
-		xsetroot -name "$mpd$anime$disks$volume$ibus$date"
+		xsetroot -name "$mpd$volume$disks$wifi$acpi$ibus$date"
 		updateRoot=0
 	fi
 

@@ -1,4 +1,5 @@
 /* appearance */
+#include <X11/XF86keysym.h>
 #include "theme_maru.h"
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 5;       /* snap pixel */
@@ -11,7 +12,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 5;       /* vertical padding of bar */
 static const int sidepad            = 15;       /* horizontal padding of bar */
-static const unsigned int statusoffset = 5 * 5;       /* number of color charactes "*" font width */
+static const unsigned int statusoffset = 6 * 9;       /* number of color charactes "*" font width */
 
 /* tagging */
 static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
@@ -26,6 +27,7 @@ static const Rule rules[] = {
 //	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ "URxvt",    NULL,       "Music",    0,            1,           -1 },
 	{ "URxvt",    NULL,       "tremc",    0,            1,           -1 },
+	{ "URxvt",    NULL,       "Settings",    0,            1,           -1 },
 	{ "Pavucontrol",NULL,     NULL,       0,            1,           -1 },
 };
 
@@ -83,30 +85,34 @@ static const char *logoutcmd[]= { "/home/maruseu/.scripts/logout.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
 	"-x", "15","-y", "5","-w", "1336", NULL  };
 
-static const char *mpccmd[]  = { "/home/maruseu/.scripts/dmenu_mpc.sh", "-i",
-	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
+//static const char *mpccmd[]  = { "/home/maruseu/.scripts/dmenu_mpc.sh", "-i",
+//	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
 
 
 static Key keys[] = {
 	/* modifier           key               function        argument */
-	{ MODKEY|ControlMask, XK_l,             spawn,          SHCMD("maim /tmp/ram/lock.png ; convert /tmp/ram/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/ram/lock.png ; i3lock -i /tmp/ram/lock.png") },
 	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/ram/clip.png ; maim -s /tmp/ram/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/ram/clip.png") },
 	{ MODKEY|ShiftMask,   XK_e,             spawn,          {.v = logoutcmd } },
 	{ MODKEY|ShiftMask,   XK_i,             spawn,          SHCMD("~/.scripts/ibus-ch.sh") },
-	{ MODKEY,             XK_p,             spawn,          SHCMD("mpc toggle") },
-	{ MODKEY|ShiftMask,   XK_comma,         spawn,          SHCMD("mpc volume -5") },
-	{ MODKEY|ShiftMask,   XK_period,        spawn,          SHCMD("mpc volume +5") },
-	{ MODKEY,             XK_comma,         spawn,          SHCMD("mpc prev") },
-	{ MODKEY,             XK_period,        spawn,          SHCMD("mpc next") },
-	//{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc --title Music -e ncmpcpp") },
+	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc --title Music -e ncmpcpp") },
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
 	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
-	{ MODKEY,             XK_minus,         spawn,          SHCMD("dvol") },
-	{ MODKEY,             XK_equal,         spawn,          SHCMD("dvol inc") },
-	{ MODKEY|ShiftMask,   XK_m,             spawn,          SHCMD("dvol toggle") },
-	{ MODKEY,             XK_m,             spawn,          {.v = mpccmd } },
+	{ 0,             XF86XK_TouchpadToggle,           spawn,       SHCMD("~/.scripts/toggle-touchpad.sh") },
+	{ 0,             XF86XK_ScreenSaver,           spawn,          SHCMD("maim /tmp/ram/lock.png ; convert /tmp/ram/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/ram/lock.png ; i3lock -i /tmp/ram/lock.png") },
+	{ 0,             XF86XK_Launch1,               spawn,          SHCMD("urxvtc --title Settings -e ~/Documents/m.a.r.u/maruSettings.sh") },
+	{ 0,             XF86XK_AudioStop,             spawn,          SHCMD("mpc stop") },
+	{ 0,             XF86XK_AudioPlay,             spawn,          SHCMD("mpc toggle") },
+	{ MODKEY,        XF86XK_AudioLowerVolume,      spawn,          SHCMD("mpc volume -5") },
+	{ MODKEY,        XF86XK_AudioRaiseVolume,      spawn,          SHCMD("mpc volume +5") },
+	{ 0,             XF86XK_AudioPrev,             spawn,          SHCMD("mpc prev") },
+	{ 0,             XF86XK_AudioNext,             spawn,          SHCMD("mpc next") },
+	{ 0,             XF86XK_AudioLowerVolume,      spawn,          SHCMD("dvol") },
+	{ 0,             XF86XK_AudioRaiseVolume,      spawn,          SHCMD("dvol inc") },
+	{ 0,             XF86XK_AudioMute,             spawn,          SHCMD("dvol toggle") },
+	{ 0,             XF86XK_AudioMicMute,          spawn,          SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
+	//{ MODKEY,             XK_m,             spawn,          {.v = mpccmd } },
 	{ MODKEY,             XK_d,             spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,   XK_a,             spawn,          {.v = animecmd } },
 	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },

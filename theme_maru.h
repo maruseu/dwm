@@ -2,6 +2,7 @@
 #define FG "#ffffff"
 #define HL "#AAA595"
 #define DMBG "#2E3440"
+//#define FONT "MonteCarlo Fixed 12:size=12"
 #define FONT "M+ 1p:style=bold:italic:size=9"
 
 static const char *fonts[]      = { FONT };
