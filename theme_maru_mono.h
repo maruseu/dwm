@@ -14,17 +14,17 @@ static const char col_dmbg[]    = DMBG;
 static const char col_dmfg[]    = FG;
 static const char col_dmsb[]    = HL;
 static const char col_dmsf[]    = BG;
-static const char col_erro[]     = "#613243";
-static const char col_warn[]     = "#b58900";
-static const char col_info[]     = "#3c4b74";
+static const char col_erro[]     = "#f88377";
+static const char col_warn[]     = "#f0fb79";
+static const char col_info[]     = "#77bded";
 static const unsigned int alpha = 0x30;
 static const char *colors[][3]      = {
 	/*               fg      bg      border   */
 	[SchemeNorm]  =  { col_fg,   col_bg, col_bg  },
 	[SchemeSel]   =  { col_bg,   col_hl, col_dmbg},
-	[SchemeWarn]  =  { col_bg,   col_warn,col_dmbg },
-	[SchemeUrgent]=	 { col_bg,   col_erro,col_dmbg },
-	[SchemeInfo]=	 { col_fg,   col_info,col_dmbg },
+	[SchemeWarn]  =  { col_warn, col_bg, col_dmbg },
+	[SchemeUrgent]=	 { col_erro, col_bg, col_dmbg },
+	[SchemeInfo]=	 { col_info, col_bg, col_dmbg },
 };
 
 static const unsigned int alphas[][3]      = {

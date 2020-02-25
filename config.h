@@ -1,6 +1,6 @@
 /* appearance */
 #include <X11/XF86keysym.h>
-#include "theme_maru.h"
+#include "theme_maru_mono.h"
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 5;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
@@ -12,7 +12,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 5;       /* vertical padding of bar */
 static const int sidepad            = 15;       /* horizontal padding of bar */
-static const unsigned int statusoffset = 6 * 9;       /* number of color charactes "*" font width */
+static const unsigned int statusoffset = 8 * 9;       /* number of color charactes "*" font width */
 
 /* tagging */
 static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
@@ -99,7 +99,8 @@ static Key keys[] = {
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
 	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
-	{ 0,             XF86XK_TouchpadToggle,           spawn,       SHCMD("~/.scripts/toggle-touchpad.sh") },
+	{ 0,             XF86XK_Display,               spawn,          SHCMD("~/.scripts/monitortoggle.sh") },
+	{ 0,             XF86XK_TouchpadToggle,        spawn,          SHCMD("~/.scripts/toggle-touchpad.sh") },
 	{ 0,             XF86XK_ScreenSaver,           spawn,          SHCMD("maim /tmp/ram/lock.png ; convert /tmp/ram/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/ram/lock.png ; i3lock -i /tmp/ram/lock.png") },
 	{ 0,             XF86XK_Launch1,               spawn,          SHCMD("urxvtc --title Settings -e ~/Documents/m.a.r.u/maruSettings.sh") },
 	{ 0,             XF86XK_AudioStop,             spawn,          SHCMD("mpc stop") },

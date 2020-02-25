@@ -2,7 +2,9 @@
 ps h -p $$ -o args='' | cut -f1 -d' '
 
 s1="   "; s2="   "
-cn=""; cs=""; ci=""; cw=""; ce=""
+cn=""; ci=""; cw=""; ce=""
+cs="";
+#cs="";
 
 echo $$ > /tmp/ram/dwmStat.pid
 
@@ -57,9 +59,9 @@ uAcpi () {
 #	acpi=`acpi -b | tr "[, ]" "\n" | grep "%" | tr -d "%"`
 	acpi=`bar.lua $(echo "$(acpi -b | tr "[, ]" "\n" | grep "%" | tr -d "%") / 100" | bc -l)`
 	if acpi --ac-adapter | grep 'on-line' > /dev/null; then
-		acpi="$ci$s1▕$acpi▏$s2"
+		acpi="$ci ▕$acpi▏ "
 	else
-		acpi="$cs$s1▕$acpi▏$s2"
+		acpi="$cs ▕$acpi▏ "
 	fi
 	updateRoot=1
 }
@@ -97,6 +99,13 @@ uWifi () {
 }
 iWifi=3
 
+uTemp () {
+	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/.0//" -e "s/ /\n/g" | grep -v "+" | grep °C`
+	temp="$cs$s1$temp$2"
+	updateRoot=1
+}
+iTemp=1
+
 uDate () {
 	date=`LC_ALL=en_US.UTF-8 date +'%a %d/%m %H:%M'`
 	date="$cs$s1$date$s2"
@@ -129,6 +138,7 @@ sIbus=0
 
 
 uVolume
+uTemp
 uIbus
 uAcpi
 uMpd
@@ -146,10 +156,9 @@ while true; do
 		sVolume=0
 	fi
 
-	if [ "$( expr $time % $iAcpi )" -eq "0" ] || [ $sAcpi -eq "1" ]; then
+	if [ "$( expr $time % $iAcpi )" -eq "0" ]; then
 		printf "acpi.."
 		uAcpi
-		sAcpi=0
 	fi
 
 	if [ "$( expr $time % $iIbus )" -eq "0" ] || [ $sIbus -eq "1" ]; then
@@ -169,6 +178,11 @@ while true; do
 		uWifi
 	fi
 
+	if [ "$( expr $time % $iTemp )" -eq "0" ]; then
+		printf "temp.."
+		uTemp
+	fi
+
 	if [ "$( expr $time % $iDate )" -eq "0" ]; then
 		printf "time.."
 		uDate
@@ -186,7 +200,7 @@ while true; do
 
 	if [ "$updateRoot" -eq "1" ]; then
 		printf "ROOT NAME\n"
-		xsetroot -name "$mpd$volume$disks$wifi$acpi$ibus$date"
+		xsetroot -name "$mpd$volume$disks$temp$wifi$acpi$ibus$date"
 		updateRoot=0
 	fi
 
