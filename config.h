@@ -10,9 +10,11 @@ static const unsigned int gappov    = 40;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int vertpad            = 5;       /* vertical padding of bar */
-static const int sidepad            = 15;       /* horizontal padding of bar */
-static const unsigned int statusoffset = 8 * 9;       /* number of color charactes "*" font width */
+static const int vertpad            = 0;       /* vertical padding of bar */
+static const int sidepad            = 0;       /* horizontal padding of bar */
+//static const int vertpad            = 5;       /* vertical padding of bar */
+//static const int sidepad            = 15;       /* horizontal padding of bar */
+static const unsigned int statusoffset = 8 * 8;       /* number of color charactes "*" font width */
 
 /* tagging */
 static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
@@ -75,15 +77,23 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *animecmd[] = { "/home/maruseu/.scripts/anime.sh", "-i", "-l", "20",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *logoutcmd[]= { "/home/maruseu/.scripts/logout.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
+
+static const char *displaycmd[]= { "/home/maruseu/.scripts/menudisplay.sh", "-i",
+	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 //static const char *mpccmd[]  = { "/home/maruseu/.scripts/dmenu_mpc.sh", "-i",
 //	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
@@ -99,7 +109,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
 	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 ~/.scripts/animeChart2.lua ansib") },
-	{ 0,             XF86XK_Display,               spawn,          SHCMD("~/.scripts/monitortoggle.sh") },
+	{ 0,             XF86XK_Display,               spawn,          {.v = displaycmd } },
 	{ 0,             XF86XK_TouchpadToggle,        spawn,          SHCMD("~/.scripts/toggle-touchpad.sh") },
 	{ 0,             XF86XK_ScreenSaver,           spawn,          SHCMD("maim /tmp/ram/lock.png ; convert /tmp/ram/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5100% /tmp/ram/lock.png ; i3lock -i /tmp/ram/lock.png") },
 	{ 0,             XF86XK_Launch1,               spawn,          SHCMD("urxvtc --title Settings -e ~/Documents/m.a.r.u/maruSettings.sh") },

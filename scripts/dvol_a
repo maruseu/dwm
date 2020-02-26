@@ -1,11 +1,13 @@
-#!/bin/bash
-if [ "$1" == "inc" ]; then
+#!/bin/sh
+if [ "$1" = "inc" ]; then
 	amixer set Master 1%+
-
+	amixer set Master unmute
 elif [ "$1" == "toggle" ]; then
-	amixer
-
+	amixer set Master toggle
 else
 	amixer set Master 1%-
+	amixer set Master unmute
 fi
-pkill -P $(</tmp/dwmStat.pid) sleep
+spid=`cat /tmp/ram/dwmStat.pid`
+kill -USR1 $spid
+pkill -P $spid sleep

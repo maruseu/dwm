@@ -3,7 +3,7 @@
 #define HL "#AAA595"
 #define DMBG "#2E3440"
 //#define FONT "MonteCarlo Fixed 12:size=12"
-#define FONT "M+ 1p:style=bold:italic:size=9"
+#define FONT "M+ 1p:style=heavy:size=8"
 
 static const char *fonts[]      = { FONT };
 static const char dmenufont[]   = FONT;
@@ -16,8 +16,8 @@ static const char col_dmsb[]    = HL;
 static const char col_dmsf[]    = BG;
 static const char col_erro[]     = "#f88377";
 static const char col_warn[]     = "#f0fb79";
-static const char col_info[]     = "#77bded";
-static const unsigned int alpha = 0x30;
+static const char col_info[]     = "#98d4ff";
+static const unsigned int alpha = 0x44;
 static const char *colors[][3]      = {
 	/*               fg      bg      border   */
 	[SchemeNorm]  =  { col_fg,   col_bg, col_bg  },

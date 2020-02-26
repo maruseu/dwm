@@ -86,13 +86,15 @@ iMpd=60
 uWifi () {
 	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
 	if [ $wifi -ge 80 ]; then
-	    wifi="$s1▂▄▆█$s2"
+	    wifi="$s1◎$s2"
 	elif [ $wifi -ge 60 ]; then
-	    wifi="$s1▂▄▆▁$s2"
+	    wifi="$s1◎$s2"
 	elif [ $wifi -ge 40 ]; then
-	    wifi="$s1▂▄▁▁$s2"
+	    wifi="$s1◯$s2"
 	elif [ $wifi -gt 0 ]; then
-	    wifi="$s1▂▁▁▁$s2"
+	    wifi="$s1○$s2"
+	else
+	    wifi="$s1◌$s2"
 	fi
 	wifi="$cs$wifi"
 	updateRoot=1
@@ -100,8 +102,8 @@ uWifi () {
 iWifi=3
 
 uTemp () {
-	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/.0//" -e "s/ /\n/g" | grep -v "+" | grep °C`
-	temp="$cs$s1$temp$2"
+	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" | grep -v "+" | grep °C`
+	temp="$cs$s1$temp$s2"
 	updateRoot=1
 }
 iTemp=1
