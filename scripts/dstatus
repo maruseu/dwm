@@ -18,7 +18,7 @@ if which pactl; then
 			elif [ "$volume" -gt 100 ]; then
 				volume="$ce$s1$volume%$s2"
 			elif [ "$volume" -ge 50 ]; then
-				volume="$cs$s1$volume%$s2"
+				volume="$cn$s1$volume%$s2"
 			elif [ "$volume" -gt 30 ]; then
 				volume="$cw$s1$volume%$s2"
 			elif [ "$volume" -gt 0 ]; then
@@ -86,24 +86,23 @@ iMpd=60
 uWifi () {
 	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
 	if [ $wifi -ge 80 ]; then
-	    wifi="$s1◎$s2"
+	    wifi="$ci$s1◎$s2"
 	elif [ $wifi -ge 60 ]; then
-	    wifi="$s1◎$s2"
+	    wifi="$cw$s1◎$s2"
 	elif [ $wifi -ge 40 ]; then
-	    wifi="$s1◯$s2"
+	    wifi="$cw$s1◯$s2"
 	elif [ $wifi -gt 0 ]; then
-	    wifi="$s1○$s2"
+	    wifi="$ce$s1○$s2"
 	else
-	    wifi="$s1◌$s2"
+	    wifi="$ce$s1◌$s2"
 	fi
-	wifi="$cs$wifi"
 	updateRoot=1
 }
 iWifi=3
 
 uTemp () {
 	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" | grep -v "+" | grep °C`
-	temp="$cs$s1$temp$s2"
+	temp="$ci$s1$temp$s2"
 	updateRoot=1
 }
 iTemp=1
@@ -195,14 +194,14 @@ while true; do
 #		uAnime
 #	fi
 
-	if [ "$( expr $time % $iDisks )" -eq "0" ]; then
-		printf "disks.."
-		uDisks
-	fi
+#	if [ "$( expr $time % $iDisks )" -eq "0" ]; then
+#		printf "disks.."
+#		uDisks
+#	fi
 
 	if [ "$updateRoot" -eq "1" ]; then
 		printf "ROOT NAME\n"
-		xsetroot -name "$mpd$volume$disks$temp$wifi$acpi$ibus$date"
+		xsetroot -name "$mpd$volume$temp$wifi$acpi$ibus$date"
 		updateRoot=0
 	fi
 
