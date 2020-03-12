@@ -30,23 +30,23 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *animecmd[] = { "/home/maruseu/.scripts/anime.sh", "-i", "-l", "20",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *logoutcmd[]= { "/home/maruseu/.scripts/logout.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *displaycmd[]= { "/home/maruseu/.scripts/menudisplay.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static Key keys[] = {
 	/* modifier           key               function        argument */
