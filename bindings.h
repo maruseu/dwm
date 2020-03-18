@@ -103,10 +103,10 @@ static Key keys[] = {
 	{ MODKEY,        XF86XK_AudioRaiseVolume,      spawn,          SHCMD("mpc volume +5") },
 	{ 0,             XF86XK_AudioPrev,             spawn,          SHCMD("mpc prev") },
 	{ 0,             XF86XK_AudioNext,             spawn,          SHCMD("mpc next") },
-	{ 0,             XF86XK_AudioLowerVolume,      spawn,          SHCMD("dvol") },
+	{ 0,             XF86XK_AudioLowerVolume,      spawn,          SHCMD("dvol dec") },
 	{ 0,             XF86XK_AudioRaiseVolume,      spawn,          SHCMD("dvol inc") },
 	{ 0,             XF86XK_AudioMute,             spawn,          SHCMD("dvol toggle") },
-	{ 0,             XF86XK_AudioMicMute,          spawn,          SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
+	{ 0,             XF86XK_AudioMicMute,          spawn,          SHCMD("dvol mictog") },
 
 	{ MODKEY,        XK_p,                         spawn,          {.v = displaycmd } },
 	//{ 0,             XF86XK_ScreenSaver,           spawn,          SHCMD("maim /tmp/ram/lock.png ; convert /tmp/ram/lock.png  channel RGB -filter Gaussian -resize 2% -define filter:sigma=1 -resize 5200% /tmp/ram/lock.png ; i3lock -i /tmp/ram/lock.png") },
@@ -114,10 +114,10 @@ static Key keys[] = {
 	{ 0,             XF86XK_Tools,                 spawn,          SHCMD("mpc stop") },
 	{ MODKEY|Mod1Mask,XK_minus,                    spawn,          SHCMD("mpc volume -5") },
 	{ MODKEY|Mod1Mask,XK_equal,                    spawn,          SHCMD("mpc volume +5") },
-	{ MODKEY,        XK_minus,                     spawn,          SHCMD("dvol") },
+	{ MODKEY,        XK_minus,                     spawn,          SHCMD("dvol dec") },
 	{ MODKEY,        XK_equal,                     spawn,          SHCMD("dvol inc") },
 	{ MODKEY|ShiftMask,XK_m,                       spawn,          SHCMD("dvol toggle") },
-	{ MODKEY|Mod1Mask,XK_m,                        spawn,          SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
+	{ MODKEY|Mod1Mask,XK_m,                        spawn,          SHCMD("dvol mictog") },
 
 	{ MODKEY|ShiftMask,   XK_r,             quit,           {0} },
 		/* commands that i will never use but i dont want to see unused warnings
@@ -144,7 +144,7 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button1,        spawn,          SHCMD("pavucontrol") },
 	{ ClkStatusText,        0,              Button2,        spawn,          SHCMD("mpc toggle") },
 	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("dvol inc") },
-	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("dvol") },
+	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("dvol dec") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
@@ -170,6 +170,7 @@ static Button buttons[] = {
 	{ ClkClientWin,         MODKEY,         Button5,        shiftview,      {.i = +1} },
 	{ ClkRootWin,           MODKEY,         Button4,        shiftview,      {.i = -1} },
 	{ ClkRootWin,           MODKEY,         Button5,        shiftview,      {.i = +1} },
+	{ ClkRootWin,           0,              Button3,        spawn,          SHCMD("menudwm.sh") },
 }; 
 
 

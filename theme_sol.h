@@ -14,7 +14,7 @@
 #define BLUE      "#268bd2"
 #define CYAN      "#2aa198"
 #define GREEN     "#859900"
-#define FONT "M+ 1p:style=bold:italic:size=9"
+#define FONT "M+ 1p:style=bold:italic:size=8"
 
 static const char *fonts[]      = { FONT };
 static const char dmenufont[]   = FONT;
@@ -24,7 +24,7 @@ static const char col_warn[]     = YELLOW;
 static const char col_erro[]     = MAGENTA;
 static const char col_info[]     = VIOLET;
 
-//* Dark
+/* Dark
 static const char col_bg[]      = BASE03;
 static const char col_fg[]      = BASE0;
 static const char col_dmbg[]    = BASE02;
@@ -33,7 +33,7 @@ static const char col_dmsf[]    = BASE03;
 static const unsigned int alpha = 0x0f2;
 // */
 
-/* Light
+//* Light
 static const char col_bg[]      = BASE3;
 static const char col_fg[]      = BASE00;
 static const char col_dmbg[]    = BASE2;

@@ -1,15 +1,15 @@
-#!/bin/dash
-if [ "$1" = "inc" ]
-then
-	pactl set-sink-volume @DEFAULT_SINK@ +1%
-	pactl set-sink-mute @DEFAULT_SINK@ off
-elif [ "$1" = "toggle" ]
-then
-	pactl set-sink-mute @DEFAULT_SINK@ toggle
-else
-	pactl set-sink-volume @DEFAULT_SINK@ -1%
-	pactl set-sink-mute @DEFAULT_SINK@ off
-fi
+#!/bin/sh
+vol="${2:-5}"
+case "$1" in
+	mictog) pactl set-source-mute @DEFAULT_SOURCE@ toggle ;;
+
+	toggle) pactl set-sink-mute @DEFAULT_SINK@ toggle ;;
+
+	dec) pactl set-sink-volume @DEFAULT_SINK@ -"$vol"% ;;
+
+	inc) pactl set-sink-volume @DEFAULT_SINK@ +"$vol"%
+	pactl set-sink-mute @DEFAULT_SINK@ off ;;
+esac
 spid=`cat /tmp/ram/dwmStat.pid`
 kill -USR1 $spid
 pkill -P $spid sleep

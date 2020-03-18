@@ -1,6 +1,6 @@
 /* appearance */
 #include <X11/XF86keysym.h>
-#include "theme_maru_mono.h"
+#include "theme_maru.h"
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 5;       /* snap pixel */
 //static const unsigned int gappih    = 0;       /* horiz inner gap between windows */
@@ -21,8 +21,8 @@ static const int sidepad            = 0;       /* horizontal padding of bar */
 static const unsigned int statusoffset = 7 * 8;       /* number of color charactes "*" font width */
 
 /* tagging */
-//static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
+//static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):

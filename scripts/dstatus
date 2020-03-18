@@ -3,8 +3,8 @@ ps h -p $$ -o args='' | cut -f1 -d' '
 
 s1="   "; s2="   "
 cn=""; ci=""; cw=""; ce=""
-cs="";
-#cs="";
+#cs="";
+cs="";
 
 echo $$ > /tmp/ram/dwmStat.pid
 
@@ -18,9 +18,7 @@ if which pactl; then
 			elif [ "$volume" -gt 100 ]; then
 				volume="$ce$s1$volume%$s2"
 			elif [ "$volume" -ge 50 ]; then
-				volume="$cn$s1$volume%$s2"
-			elif [ "$volume" -gt 30 ]; then
-				volume="$cw$s1$volume%$s2"
+				volume="$cs$s1$volume%$s2"
 			elif [ "$volume" -gt 0 ]; then
 				volume="$cw$s1$volume%$s2"
 			fi
@@ -59,9 +57,9 @@ uAcpi () {
 #	acpi=`acpi -b | tr "[, ]" "\n" | grep "%" | tr -d "%"`
 	acpi=`bar.lua $(echo "$(acpi -b | tr "[, ]" "\n" | grep "%" | tr -d "%") / 100" | bc -l)`
 	if acpi --ac-adapter | grep 'on-line' > /dev/null; then
-		acpi="$ci ▕$acpi▏ "
-	else
 		acpi="$cs ▕$acpi▏ "
+	else
+		acpi="$ci ▕$acpi▏ "
 	fi
 	updateRoot=1
 }
@@ -86,9 +84,9 @@ iMpd=60
 uWifi () {
 	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
 	if [ $wifi -ge 80 ]; then
-	    wifi="$ci$s1◎$s2"
+	    wifi="$cs$s1◎$s2"
 	elif [ $wifi -ge 60 ]; then
-	    wifi="$cw$s1◎$s2"
+	    wifi="$ci$s1◎$s2"
 	elif [ $wifi -ge 40 ]; then
 	    wifi="$cw$s1◯$s2"
 	elif [ $wifi -gt 0 ]; then
@@ -101,8 +99,8 @@ uWifi () {
 iWifi=3
 
 uTemp () {
-	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" | grep -v "+" | grep °C`
-	temp="$ci$s1$temp$s2"
+	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" -e "s/\.0//" | grep -v "+" | grep °C`
+	temp="$cs$s1$temp$s2"
 	updateRoot=1
 }
 iTemp=1
