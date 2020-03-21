@@ -81,6 +81,13 @@ uMpd () {
 }
 iMpd=60
 
+uCorona () {
+	corona=`curl https://corona-stats.online/BR 2> /dev/null | grep Brazil | awk '{print $6}'`
+	corona="$s1Corona-chan: $corona$s2"
+	updateRoot=1
+}
+iCorona=30
+
 uWifi () {
 	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
 	if [ $wifi -ge 80 ]; then
@@ -136,6 +143,7 @@ sMpd=0
 sIbus=0
 
 
+uCorona
 uVolume
 uTemp
 uIbus
@@ -182,6 +190,11 @@ while true; do
 		uTemp
 	fi
 
+	if [ "$( expr $time % $iCorona )" -eq "0" ]; then
+		printf "corona.."
+		uCorona
+	fi
+	
 	if [ "$( expr $time % $iDate )" -eq "0" ]; then
 		printf "time.."
 		uDate
@@ -199,7 +212,7 @@ while true; do
 
 	if [ "$updateRoot" -eq "1" ]; then
 		printf "ROOT NAME\n"
-		xsetroot -name "$mpd$volume$temp$wifi$acpi$ibus$date"
+		xsetroot -name "$mpd$volume$temp$corona$wifi$acpi$ibus$date"
 		updateRoot=0
 	fi
 
