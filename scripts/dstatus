@@ -82,8 +82,8 @@ uMpd () {
 iMpd=60
 
 uCorona () {
-	corona=`curl https://corona-stats.online/BR 2> /dev/null | grep Brazil | awk '{print $6}'`
-	corona="$s1Corona-chan: $corona$s2"
+	corona=`curl https://corona-stats.online/BR 2> /dev/null | grep Brazil | awk '{print $6}' | sed 's/^[\[..m//g'`
+	corona="${s1}Corona-chan: $corona$s2"
 	updateRoot=1
 }
 iCorona=30
