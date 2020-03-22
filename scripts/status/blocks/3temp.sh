@@ -24,4 +24,28 @@ EOF
 
 	printf "\$temp" >> rootVars
 
+else
+	cat >> ddblocks << EOF
+
+uTemp () {
+	temp=\`sysctl -a | grep temperature | awk '{print \$NF}'\`
+	temp="\$cs\$s1\$temp\$s2"
+	updateRoot=1
+}
+iTemp=1
+uTemp
+
+EOF
+
+	cat >> udblocks << EOF
+
+	if [ "\$( expr \$time % \$iTemp )" -eq "0" ]; then
+		printf "temp.."
+		uTemp
+	fi
+
+EOF
+
+	printf "\$temp" >> rootVars
+
 fi
