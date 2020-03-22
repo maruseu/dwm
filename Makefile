@@ -40,7 +40,7 @@ install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
 	cp -f dwm ${DESTDIR}${PREFIX}/bin
 	cp -f scripts/dsession ${DESTDIR}${PREFIX}/bin
-	cp -f scripts/dstatus ${DESTDIR}${PREFIX}/bin
+	./scripts/status/generator.sh && cp -f scripts/status/dstatus ${DESTDIR}${PREFIX}/bin
 	which pactl && cp -f scripts/dvol ${DESTDIR}${PREFIX}/bin || cp -f scripts/dvol_a ${DESTDIR}${PREFIX}/bin/dvol
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dvol
