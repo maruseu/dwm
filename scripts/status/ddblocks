@@ -1,0 +1,133 @@
+
+uMpd () {
+	mpd=`mpc current -f "$ci$s1%artist% - %title%$s2"`
+	if [ -z "$mpd" ]; then
+		mpd="$cn"
+	fi
+	updateRoot=1
+}
+iMpd=60
+uMpd
+
+trap "sMpd=1;" USR2
+sMpd=0
+
+uVolume () {
+	volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
+	mute=`pactl list sinks | grep Mute | awk '{print $2}'`
+	if [ $mute = "no" ]; then
+		if [ "$volume" -eq 0 ]; then
+			volume="$cn$s1$volume%$s2"
+		elif [ "$volume" -gt 100 ]; then
+			volume="$ce$s1$volume%$s2"
+		elif [ "$volume" -ge 50 ]; then
+			volume="$cs$s1$volume%$s2"
+		elif [ "$volume" -gt 0 ]; then
+			volume="$cw$s1$volume%$s2"
+		fi
+	else
+		volume="$cn$s1"MUTE"$s2"
+	fi
+
+	updateRoot=1
+}
+
+iVolume=2
+uVolume
+
+trap "sVolume=1;" USR1
+sVolume=0
+
+
+uDisks () {
+	disks=`df -h | grep /dev/sda1 | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
+	disks="$cs$s1$disks$s2"
+	updateRoot=1
+}
+iDisks=30
+uDisks
+
+
+uTemp () {
+	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" -e "s/\.0//" | grep -v "+" | grep °C`
+	temp="$cs$s1$temp$s2"
+	updateRoot=1
+}
+iTemp=1
+uTemp
+
+
+uWifi () {
+	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
+	if [ $wifi -ge 80 ]; then
+	    wifi="$cs$s1◎$s2"
+	elif [ $wifi -ge 60 ]; then
+	    wifi="$ci$s1◎$s2"
+	elif [ $wifi -ge 40 ]; then
+	    wifi="$cw$s1◯$s2"
+	elif [ $wifi -gt 0 ]; then
+	    wifi="$ce$s1○$s2"
+	else
+	    wifi="$ce$s1◌$s2"
+	fi
+	updateRoot=1
+}
+iWifi=3
+uWifi
+
+
+uBat () {
+	for i in /sys/class/power_supply/BAT?/ ; do
+		bat=`cat $i/capacity`
+		if [ $bat -lt 11 ]; then
+			bat="░"
+		elif [ $bat -lt 22 ]; then
+			bat="▁"
+		elif [ $bat -lt 33 ]; then
+			bat="▂"
+		elif [ $bat -lt 44 ]; then
+			bat="▃"	
+		elif [ $bat -lt 55 ]; then
+			bat="▄"
+		elif [ $bat -lt 67 ]; then
+			bat="▅"
+		elif [ $bat -lt 78 ]; then
+			bat="▆"
+		elif [ $bat -lt 89 ]; then
+			bat="▇"
+		else
+			bat="█"
+		fi
+		
+		if grep 'Discharging' $i/status > /dev/null; then
+			tbat="$ci ▕$bat▏ "
+		else
+			tbat="$cs ▕$bat▏ "
+		fi
+	done
+	updateRoot=1
+}
+iBat=1
+uBat
+
+
+uIbus () {
+	ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
+	ibus="$cs$s1$ibus$s2"
+	updateRoot=1
+}
+iIbus=10
+uIbus
+
+trap "sIbus=1;"   RTMIN
+sIbus=0
+
+
+uDate () {
+	date=`date +'%a %d/%m %H:%M'`
+	date="$cs$s1$date$s2"
+	updateRoot=1
+}
+iDate=30
+uDate
+
