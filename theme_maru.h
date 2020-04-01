@@ -3,7 +3,8 @@
 #define HL "#AAA595"
 #define DMBG "#2E3440"
 //#define FONT "MonteCarlo Fixed 12:size=12"
-#define FONT "M+ 1p:style=bold:size=8"
+//#define FONT "MisakiGothic2nd:size=6"
+#define FONT "M+ 1p:italic:style=bold:size=9"
 
 static const char *fonts[]      = { FONT };
 static const char dmenufont[]   = FONT;
