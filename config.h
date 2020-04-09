@@ -18,8 +18,6 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 //static const int sidepad            = 0;       /* horizontal padding of bar */
 static const int vertpad            = 5;       /* vertical padding of bar */
 static const int sidepad            = 15;       /* horizontal padding of bar */
-static const unsigned int statusoffset = 8 * 9;       /* number of color charactes "*" font width */
-//static const unsigned int statusoffset = 8 * 8;       /* number of color charactes "*" font width */
 
 /* tagging */
 static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };

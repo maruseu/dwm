@@ -1,32 +1,57 @@
+while :; do
+	current_mus=$(mpc current --wait)
+
+	notify-send "Now Playing" "$current_mus"
+
+	kill -USR2 $$
+	pkill -P $$ sleep
+done &
 
 uMpd () {
-	mpd=`mpc current -f "$ci$s1%artist% - %title%$s2"`
-	if [ -z "$mpd" ]; then
+	mpd="$ci$s1$(mpc current)$s2"
+	if [ "$mpd" = "$ci$s1$s2" ]; then
 		mpd="$cn"
 	fi
 	updateRoot=1
 }
-iMpd=60
 uMpd
 
 trap "sMpd=1;" USR2
 sMpd=0
+
+
+uTemp () {
+	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" -e "s/\.0//" | grep -v "+" | grep °C`
+	temp="$cs$s1$temp$s2"
+	updateRoot=1
+}
+iTemp=1
+uTemp
+
+
+uDisks () {
+	disks=`df -h | grep /dev/sda1 | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
+	disks="$cs$s1$disks$s2"
+	updateRoot=1
+}
+iDisks=30
+uDisks
 
 uVolume () {
 	volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
 	mute=`pactl list sinks | grep Mute | awk '{print $2}'`
 	if [ $mute = "no" ]; then
 		if [ "$volume" -eq 0 ]; then
-			volume="$cn$s1$volume%$s2"
+			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
 		elif [ "$volume" -gt 100 ]; then
-			volume="$ce$s1$volume%$s2"
+			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,25,2^^c#FF5577^^r2,8,$(expr $(expr $volume - 100) / 4),2^^f29^$s2"
 		elif [ "$volume" -ge 50 ]; then
-			volume="$cs$s1$volume%$s2"
+			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
 		elif [ "$volume" -gt 0 ]; then
-			volume="$cw$s1$volume%$s2"
+			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
 		fi
 	else
-		volume="$cn$s1"MUTE"$s2"
+		volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^f29^$s2"
 	fi
 
 	updateRoot=1
@@ -39,34 +64,16 @@ trap "sVolume=1;" USR1
 sVolume=0
 
 
-uDisks () {
-	disks=`df -h | grep /dev/sda1 | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
-	disks="$cs$s1$disks$s2"
-	updateRoot=1
-}
-iDisks=30
-uDisks
-
-
-uTemp () {
-	temp=`sensors | grep "Package id 0:" | sed -e "s/+//" -e "s/ /\n/g" -e "s/\.0//" | grep -v "+" | grep °C`
-	temp="$cs$s1$temp$s2"
-	updateRoot=1
-}
-iTemp=1
-uTemp
-
-
 uWifi () {
 	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
 	if [ $wifi -ge 80 ]; then
 	    wifi="$cs$s1◎$s2"
 	elif [ $wifi -ge 60 ]; then
-	    wifi="$ci$s1◎$s2"
+	    wifi="$cs$s1◎$s2"
 	elif [ $wifi -ge 40 ]; then
-	    wifi="$cw$s1◯$s2"
+	    wifi="$cs$s1◯$s2"
 	elif [ $wifi -gt 0 ]; then
-	    wifi="$ce$s1○$s2"
+	    wifi="$cs$s1○$s2"
 	else
 	    wifi="$ce$s1◌$s2"
 	fi
@@ -80,31 +87,13 @@ uBat () {
 	for i in /sys/class/power_supply/BAT?/ ; do
 		if [ -e $i ]; then
 			bat=`cat $i/capacity`
-			if [ $bat -lt 11 ]; then
-				bat="░"
-			elif [ $bat -lt 22 ]; then
-				bat="▁"
-			elif [ $bat -lt 33 ]; then
-				bat="▂"
-			elif [ $bat -lt 44 ]; then
-				bat="▃"	
-			elif [ $bat -lt 55 ]; then
-				bat="▄"
-			elif [ $bat -lt 67 ]; then
-				bat="▅"
-			elif [ $bat -lt 78 ]; then
-				bat="▆"
-			elif [ $bat -lt 89 ]; then
-				bat="▇"
-			else
-				bat="█"
-			fi
 			
 			if grep 'Discharging' $i/status > /dev/null; then
-				tbat="$ci ▕$bat▏ "
+				bat="^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#FF5577^^r2,6,$(expr $bat / 5),6^^f22^"
 			else
-				tbat="$cs ▕$bat▏ "
+				bat="^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#55FF77^^r2,6,$(expr $bat / 5),6^^f22^"
 			fi
+			tbat="$cs$s1$bat$s2"
 		fi
 	done
 	[ -z "$tbat" ] && tbat="$cs"

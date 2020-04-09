@@ -9,10 +9,10 @@ which dash && echo '#!/bin/dash' > $file || echo '#!/bin/sh' > $file
 
 cat >> $file << EOF
 
-s1="   "; s2="^c#000000^   "
-cn=""; ci=""; cw=""; ce=""
+s1="   "; s2="   "
+cn="^d^"; ci="^c#000000^^b#77AAEE^"; cw="^c#000000^^b#DDBB77^"; ce="^c#000000^^b#FFAA99^"
 #cs="";
-cs="";
+cs="^c#000000^^b#FFFFFF^";
 
 echo \$\$ > /tmp/ram/dwmStat.pid
 

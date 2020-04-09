@@ -1,9 +1,9 @@
 #!/bin/dash
 
-s1="   "; s2="^c#000000^   "
-cn=""; ci=""; cw=""; ce=""
+s1="   "; s2="   "
+cn="^d^"; ci="^c#000000^^b#77AAEE^"; cw="^c#000000^^b#DDBB77^"; ce="^c#000000^^b#FFAA99^"
 #cs="";
-cs="";
+cs="^c#000000^^b#FFFFFF^";
 
 echo $$ > /tmp/ram/dwmStat.pid
 
@@ -51,16 +51,16 @@ uVolume () {
 	mute=`pactl list sinks | grep Mute | awk '{print $2}'`
 	if [ $mute = "no" ]; then
 		if [ "$volume" -eq 0 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
+			volume="$cs$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,7,30,4^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
 		elif [ "$volume" -gt 100 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,25,2^^c#FF5577^^r2,8,$(expr $(expr $volume - 100) / 4),2^^f29^$s2"
+			volume="$cs$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,7,30,4^^c#55FF77^^r2,8,25,2^^c#FF5577^^r2,8,$(expr $(expr $volume - 100) / 4),2^^f29^$s2"
 		elif [ "$volume" -ge 50 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
+			volume="$cs$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,7,30,4^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
 		elif [ "$volume" -gt 0 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
+			volume="$cs$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,7,30,4^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
 		fi
 	else
-		volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^f29^$s2"
+		volume="$cn$s1"MUTE"$s2"
 	fi
 
 	updateRoot=1
@@ -98,9 +98,9 @@ uBat () {
 			bat=`cat $i/capacity`
 			
 			if grep 'Discharging' $i/status > /dev/null; then
-				bat="^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#FF5577^^r2,6,$(expr $bat / 5),6^^f22^"
+				bat="^c#FFFFFF^^r0,0,30,30^^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#FF5577^^r2,6,$(expr $bat / 5),6^^f22^"
 			else
-				bat="^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#55FF77^^r2,6,$(expr $bat / 5),6^^f22^"
+				bat="^c#FFFFFF^^r0,0,30,30^^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#55FF77^^r2,6,$(expr $bat / 5),6^^f22^"
 			fi
 			tbat="$cs$s1$bat$s2"
 		fi

@@ -1,5 +1,6 @@
 #!/bin/sh
 
+Y=8
 if which pactl; then
 	cat >> ddblocks << EOF
 uVolume () {
@@ -7,13 +8,13 @@ uVolume () {
 	mute=\`pactl list sinks | grep Mute | awk '{print \$2}'\`
 	if [ \$mute = "no" ]; then
 		if [ "\$volume" -eq 0 ]; then
-			volume="\$cn\$s1\$volume%\$s2"
+			volume="\$cs\$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,$( expr $Y - 1 ),30,4^^c#55FF77^^r2,$Y,\$(expr \$volume / 4),2^^f29^\$s2"
 		elif [ "\$volume" -gt 100 ]; then
-			volume="\$ce\$s1\$volume%\$s2"
+			volume="\$cs\$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,$( expr $Y - 1 ),30,4^^c#55FF77^^r2,$Y,25,2^^c#FF5577^^r2,$Y,\$(expr \$(expr \$volume - 100) / 4),2^^f29^\$s2"
 		elif [ "\$volume" -ge 50 ]; then
-			volume="\$cs\$s1\$volume%\$s2"
+			volume="\$cs\$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,$( expr $Y - 1 ),30,4^^c#55FF77^^r2,$Y,\$(expr \$volume / 4),2^^f29^\$s2"
 		elif [ "\$volume" -gt 0 ]; then
-			volume="\$cw\$s1\$volume%\$s2"
+			volume="\$cs\$s1^c#FFFFFF^^r0,0,30,30^^c#555555^^r0,$( expr $Y - 1 ),30,4^^c#55FF77^^r2,$Y,\$(expr \$volume / 4),2^^f29^\$s2"
 		fi
 	else
 		volume="\$cn\$s1"MUTE"\$s2"
