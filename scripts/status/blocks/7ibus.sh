@@ -18,7 +18,7 @@ EOF
 
 	cat >> udblocks << EOF
 
-	if [ "\$( expr \$time % \$iIbus )" -eq "0" ] || [ \$sIbus -eq "1" ]; then
+	if [ "\$((\$time % \$iIbus))" -eq "0" ] || [ \$sIbus -eq "1" ]; then
 		printf "ibus.."
 		uIbus
 		sIbus=0

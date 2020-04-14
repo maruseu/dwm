@@ -37,7 +37,7 @@ cat udblocks >> $file
 
 cat >> $file << EOF
 	if [ "\$updateRoot" -eq "1" ]; then
-		xsetroot -name "$(cat rootVars)         "
+		xsetroot -name "$(cat rootVars)"
 		updateRoot=0
 	fi
 

@@ -25,7 +25,7 @@ EOF
 
 	cat >> udblocks << EOF
 
-	if [ "\$( expr \$time % \$iWifi )" -eq "0" ]; then
+	if [ "\$((\$time % \$iWifi))" -eq "0" ]; then
 		printf "wifi.."
 		uWifi
 	fi

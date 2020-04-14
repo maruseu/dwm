@@ -15,7 +15,7 @@ EOF
 
 	cat >> udblocks << EOF
 
-	if [ "\$( expr \$time % \$iTemp )" -eq "0" ]; then
+	if [ "\$((\$time % \$iTemp))" -eq "0" ]; then
 		printf "temp.."
 		uTemp
 	fi
@@ -39,7 +39,7 @@ EOF
 
 	cat >> udblocks << EOF
 
-	if [ "\$( expr \$time % \$iTemp )" -eq "0" ]; then
+	if [ "\$((\$time % \$iTemp))" -eq "0" ]; then
 		printf "temp.."
 		uTemp
 	fi

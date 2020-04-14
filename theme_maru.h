@@ -1,9 +1,9 @@
-#define BG "#222222"
+//#define BG "#222222"
+#define BG "#000000"
 #define FG "#ffffff"
 #define HL "#FFFFFF"
-#define DMBG "#2E3440"
-//#define FONT "MonteCarlo Fixed 12:size=12"
-//#define FONT "MisakiGothic2nd:size=6"
+#define DMBG "#000000"
+//#define DMBG "#2E3440"
 #define FONT "M+ 1p:style=medium:size=8"
 
 static const char *fonts[]      = { FONT };
@@ -18,6 +18,6 @@ static const char col_dmsf[]    = BG;
 static const char *colors[][3]      = {
 	/*               fg      bg      border   */
 	[SchemeNorm]  =  { col_fg,   col_bg, col_bg  },
-	[SchemeSel]   =  { col_bg,   col_hl, col_dmbg},
+	[SchemeSel]   =  { col_bg,   col_hl, col_hl},
 };
 

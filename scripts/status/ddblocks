@@ -84,14 +84,15 @@ uWifi
 
 
 uBat () {
+	tbat=""
 	for i in /sys/class/power_supply/BAT?/ ; do
 		if [ -e $i ]; then
 			bat=`cat $i/capacity`
 			
 			if grep 'Discharging' $i/status > /dev/null; then
-				bat="^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#FF5577^^r2,6,$(expr $bat / 5),6^^f22^"
+				bat="^c#888888^^r0,7,1,4^^r1,5,22,8^^c#000000^^r2,6,20,6^^c#FF5577^^r2,6,$(expr $bat / 5),6^^f23^"
 			else
-				bat="^c#888888^^r0,7,1,4^^r1,5,21,8^^c#000000^^r2,6,19,6^^c#55FF77^^r2,6,$(expr $bat / 5),6^^f22^"
+				bat="^c#888888^^r0,7,1,4^^r1,5,22,8^^c#000000^^r2,6,20,6^^c#55FF77^^r2,6,$(expr $bat / 5),6^^f23^"
 			fi
 			tbat="$cs$s1$bat$s2"
 		fi

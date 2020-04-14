@@ -14,7 +14,7 @@ EOF
 
 cat >> udblocks << EOF
 
-	if [ "\$( expr \$time % \$iDate )" -eq "0" ]; then
+	if [ "\$((\$time % \$iDate))" -eq "0" ]; then
 		printf "time.."
 		uDate
 	fi

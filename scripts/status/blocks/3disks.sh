@@ -14,7 +14,7 @@ EOF
 
 cat >> udblocks << EOF
 
-	if [ "\$( expr \$time % \$iDisks )" -eq "0" ]; then
+	if [ "\$((\$time % \$iDisks))" -eq "0" ]; then
 		printf "disks.."
 		uDisks
 	fi

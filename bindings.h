@@ -25,28 +25,28 @@ void shiftview(const Arg *arg) {
 }
 
 /* commands */
-static const char *termcmd[]  = { "tabbed", "-c", "urxvt", "-embed", NULL };
+static const char *termcmd[]  = { "tabbed", "-c", "urxvt", "-bg", "\[100\]#000000", "-embed", NULL };
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *animecmd[] = { "anime.sh", "-i", "-l", "20",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *logoutcmd[]= { "logout.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static const char *displaycmd[]= { "menudisplay.sh", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-	"-x", "15","-y", "5","-w", "1336", NULL  };
-//	NULL  };
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
 
 static Key keys[] = {
 	/* modifier           key               function        argument */

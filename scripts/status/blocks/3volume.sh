@@ -1,24 +1,22 @@
 #!/bin/sh
 
 Y=8
-vol_rect="\$cs\$s1^c#888888^^r0,$( expr $Y - 1 ),30,4^^c#000000^^r2,$Y,25,2^"
+vol_rect="\$cs\$s1^c#888888^^r0,$(($Y - 1)),54,4^^c#000000^^r2,$Y,50,2^"
 if which pactl; then
 	cat >> ddblocks << EOF
 uVolume () {
 	volume=\`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print \$5}' | tr -d "%"\`
 	mute=\`pactl list sinks | grep Mute | awk '{print \$2}'\`
 	if [ \$mute = "no" ]; then
-		if [ "\$volume" -eq 0 ]; then
-			volume="$vol_rect^c#55FF77^^r2,$Y,\$(expr \$volume / 4),2^^f29^\$s2"
-		elif [ "\$volume" -gt 100 ]; then
-			volume="$vol_rect^c#55FF77^^r2,$Y,25,2^^c#FF5577^^r2,$Y,\$(expr \$(expr \$volume - 100) / 4),2^^f29^\$s2"
+		if [ "\$volume" -gt 100 ]; then
+			volume="$vol_rect^c#55FF77^^r2,$Y,50,2^^c#FF5577^^r2,$Y,\$(expr \$(expr \$volume - 100) / 2),2^^f54^\$s2"
 		elif [ "\$volume" -ge 50 ]; then
-			volume="$vol_rect^c#55FF77^^r2,$Y,\$(expr \$volume / 4),2^^f29^\$s2"
-		elif [ "\$volume" -gt 0 ]; then
-			volume="$vol_rect^c#55FF77^^r2,$Y,\$(expr \$volume / 4),2^^f29^\$s2"
+			volume="$vol_rect^c#55FF77^^r2,$Y,\$((\$volume / 2)),2^^f54^\$s2"
+		elif [ "\$volume" -ge 0 ]; then
+			volume="$vol_rect^c#FFFF77^^r2,$Y,\$((\$volume / 2)),2^^f54^\$s2"
 		fi
 	else
-		volume="$vol_rect^f29^\$s2"
+			volume="$vol_rect^c#AAAAAA^^r2,$Y,\$((\$volume / 2)),2^^f54^\$s2"
 	fi
 
 	updateRoot=1
@@ -33,7 +31,7 @@ sVolume=0
 EOF
 
 	cat >> udblocks << EOF
-	if [ "\$( expr \$time % \$iVolume )" -eq "0" ] || [ \$sVolume -eq "1" ]; then
+	if [ "\$((\$time % \$iVolume))" -eq "0" ] || [ \$sVolume -eq "1" ]; then
 		printf "volume.."
 		uVolume
 		sVolume=0
@@ -73,7 +71,7 @@ sVolume=0
 EOF
 
 	cat >> udblocks << EOF
-	if [ "\$( expr \$time % \$iVolume )" -eq "0" ] || [ \$sVolume -eq "1" ]; then
+	if [ "\$((\$time % \$iVolume))" -eq "0" ] || [ \$sVolume -eq "1" ]; then
 		printf "volume.."
 		uVolume
 		sVolume=0
