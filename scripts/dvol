@@ -1,5 +1,5 @@
 #!/bin/sh
-vol="${2:-5}"
+vol="${2:-2}"
 case "$1" in
 	mictog) pactl set-source-mute @DEFAULT_SOURCE@ toggle ;;
 
@@ -10,6 +10,4 @@ case "$1" in
 	inc) pactl set-sink-volume @DEFAULT_SINK@ +"$vol"%
 	pactl set-sink-mute @DEFAULT_SINK@ off ;;
 esac
-spid=`cat /tmp/ram/dwmStat.pid`
-kill -USR1 $spid
-pkill -P $spid sleep
+getvol.sh

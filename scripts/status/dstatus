@@ -1,6 +1,6 @@
 #!/bin/dash
 
-s1="   "; s2="^c#000000^   "
+s1="  "; s2="  "
 cn=""; ci=""; cw=""; ce=""
 #cs="";
 cs="";
@@ -17,8 +17,8 @@ while :; do
 done &
 
 uMpd () {
-	mpd="$ci$s1$(mpc current)$s2"
-	if [ "$mpd" = "$ci$s1$s2" ]; then
+	mpd="$ci$s1「 ♪  $(mpc current)  」$s2"
+	if [ "$mpd" = "$ci$s1「 ♪    」$s2" ]; then
 		mpd="$cn"
 	fi
 	updateRoot=1
@@ -38,70 +38,15 @@ iTemp=1
 uTemp
 
 
-uDisks () {
-	disks=`df -h | grep /dev/sda1 | awk '{print toupper($1)" "$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'`
-	disks="$cs$s1$disks$s2"
-	updateRoot=1
-}
-iDisks=30
-uDisks
-
-uVolume () {
-	volume=`pactl list sinks | grep -v 'Base Volume' | grep Volume | head -1 | awk '{print $5}' | tr -d "%"`
-	mute=`pactl list sinks | grep Mute | awk '{print $2}'`
-	if [ $mute = "no" ]; then
-		if [ "$volume" -eq 0 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
-		elif [ "$volume" -gt 100 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,25,2^^c#FF5577^^r2,8,$(expr $(expr $volume - 100) / 4),2^^f29^$s2"
-		elif [ "$volume" -ge 50 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
-		elif [ "$volume" -gt 0 ]; then
-			volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^c#55FF77^^r2,8,$(expr $volume / 4),2^^f29^$s2"
-		fi
-	else
-		volume="$cs$s1^c#888888^^r0,7,30,4^^c#000000^^r2,8,25,2^^f29^$s2"
-	fi
-
-	updateRoot=1
-}
-
-iVolume=2
-uVolume
-
-trap "sVolume=1;" USR1
-sVolume=0
-
-
-uWifi () {
-	wifi=`grep wlp3s0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }'`
-	if [ $wifi -ge 80 ]; then
-	    wifi="$cs$s1◎$s2"
-	elif [ $wifi -ge 60 ]; then
-	    wifi="$cs$s1◎$s2"
-	elif [ $wifi -ge 40 ]; then
-	    wifi="$cs$s1◯$s2"
-	elif [ $wifi -gt 0 ]; then
-	    wifi="$cs$s1○$s2"
-	else
-	    wifi="$ce$s1◌$s2"
-	fi
-	updateRoot=1
-}
-iWifi=3
-uWifi
-
-
 uBat () {
-	tbat=""
 	for i in /sys/class/power_supply/BAT?/ ; do
 		if [ -e $i ]; then
 			bat=`cat $i/capacity`
 			
 			if grep 'Discharging' $i/status > /dev/null; then
-				bat="^c#888888^^r0,7,1,4^^r1,5,22,8^^c#000000^^r2,6,20,6^^c#FF5577^^r2,6,$(expr $bat / 5),6^^f23^"
+			bat="⇣ $bat""%"
 			else
-				bat="^c#888888^^r0,7,1,4^^r1,5,22,8^^c#000000^^r2,6,20,6^^c#55FF77^^r2,6,$(expr $bat / 5),6^^f23^"
+			bat="⚡ $bat""%"
 			fi
 			tbat="$cs$s1$bat$s2"
 		fi
@@ -113,20 +58,9 @@ iBat=1
 uBat
 
 
-uIbus () {
-	ibus=`ibus engine | sed 's/:/ /g' | sed 's/-/ /g' | awk '{print toupper($2)}'`
-	ibus="$cs$s1$ibus$s2"
-	updateRoot=1
-}
-iIbus=10
-uIbus
-
-trap "sIbus=1;"   RTMIN
-sIbus=0
-
-
 uDate () {
-	date=`date +'%a %d/%m %H:%M'`
+#	date=`date +'%a %d/%m %H:%M'`
+	date=`date +'%a %H:%M'`
 	date="$cs$s1$date$s2"
 	updateRoot=1
 }
@@ -135,7 +69,7 @@ uDate
 
 
 while true; do
-	time=`date +%S`
+	time=`date +%s`
 
 
 	if [ $sMpd -eq "1" ]; then
@@ -145,26 +79,9 @@ while true; do
 	fi
 
 
-	if [ "$( expr $time % $iTemp )" -eq "0" ]; then
+	if [ "$(($time % $iTemp))" -eq "0" ]; then
 		printf "temp.."
 		uTemp
-	fi
-
-
-	if [ "$( expr $time % $iDisks )" -eq "0" ]; then
-		printf "disks.."
-		uDisks
-	fi
-
-	if [ "$( expr $time % $iVolume )" -eq "0" ] || [ $sVolume -eq "1" ]; then
-		printf "volume.."
-		uVolume
-		sVolume=0
-	fi
-
-	if [ "$( expr $time % $iWifi )" -eq "0" ]; then
-		printf "wifi.."
-		uWifi
 	fi
 
 
@@ -174,20 +91,13 @@ while true; do
 	fi
 
 
-	if [ "$( expr $time % $iIbus )" -eq "0" ] || [ $sIbus -eq "1" ]; then
-		printf "ibus.."
-		uIbus
-		sIbus=0
-	fi
-
-
-	if [ "$( expr $time % $iDate )" -eq "0" ]; then
+	if [ "$(($time % $iDate))" -eq "0" ]; then
 		printf "time.."
 		uDate
 	fi
 
 	if [ "$updateRoot" -eq "1" ]; then
-		xsetroot -name "$mpd$temp$disks$volume$wifi$tbat$ibus$date"
+		xsetroot -name "$mpd$temp$tbat$date"
 		updateRoot=0
 	fi
 

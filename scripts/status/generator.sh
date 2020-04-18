@@ -9,7 +9,7 @@ which dash && echo '#!/bin/dash' > $file || echo '#!/bin/sh' > $file
 
 cat >> $file << EOF
 
-s1="   "; s2="^c#000000^   "
+s1="  "; s2="  "
 cn=""; ci=""; cw=""; ce=""
 #cs="";
 cs="";
@@ -29,7 +29,7 @@ cat ddblocks >> $file
 cat >> $file << EOF
 
 while true; do
-	time=\`date +%S\`
+	time=\`date +%s\`
 
 EOF
 

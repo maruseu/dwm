@@ -6,26 +6,9 @@
 	fi
 
 
-	if [ "$( expr $time % $iTemp )" -eq "0" ]; then
+	if [ "$(($time % $iTemp))" -eq "0" ]; then
 		printf "temp.."
 		uTemp
-	fi
-
-
-	if [ "$( expr $time % $iDisks )" -eq "0" ]; then
-		printf "disks.."
-		uDisks
-	fi
-
-	if [ "$( expr $time % $iVolume )" -eq "0" ] || [ $sVolume -eq "1" ]; then
-		printf "volume.."
-		uVolume
-		sVolume=0
-	fi
-
-	if [ "$( expr $time % $iWifi )" -eq "0" ]; then
-		printf "wifi.."
-		uWifi
 	fi
 
 
@@ -35,14 +18,7 @@
 	fi
 
 
-	if [ "$( expr $time % $iIbus )" -eq "0" ] || [ $sIbus -eq "1" ]; then
-		printf "ibus.."
-		uIbus
-		sIbus=0
-	fi
-
-
-	if [ "$( expr $time % $iDate )" -eq "0" ]; then
+	if [ "$(($time % $iDate))" -eq "0" ]; then
 		printf "time.."
 		uDate
 	fi

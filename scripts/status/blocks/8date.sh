@@ -3,7 +3,8 @@
 cat >> ddblocks << EOF
 
 uDate () {
-	date=\`date +'%a %d/%m %H:%M'\`
+#	date=\`date +'%a %d/%m %H:%M'\`
+	date=\`date +'%a %H:%M'\`
 	date="\$cs\$s1\$date\$s2"
 	updateRoot=1
 }

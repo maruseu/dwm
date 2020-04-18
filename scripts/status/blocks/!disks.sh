@@ -3,7 +3,8 @@
 cat >> ddblocks << EOF
 
 uDisks () {
-	disks=\`df -h | grep /dev/sda1 | awk '{print toupper(\$1)" "\$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'\`
+#	disks=\`df -h | grep /dev/sda1 | awk '{print toupper(\$1)" "\$4}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'\`
+	disks=\`df -h | grep /dev/sda1 | awk '{print toupper(\$4)}' | sed -e ':a' -e 'N' -e 's/\n/ \| /g' | sed 's/\/DEV\/SD//g'\`
 	disks="\$cs\$s1\$disks\$s2"
 	updateRoot=1
 }

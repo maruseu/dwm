@@ -12,8 +12,8 @@ while :; do
 done &
 
 uMpd () {
-	mpd="\$ci\$s1\$(mpc current)\$s2"
-	if [ "\$mpd" = "\$ci\$s1\$s2" ]; then
+	mpd="\$ci\$s1「 ♪  \$(mpc current)  」\$s2"
+	if [ "\$mpd" = "\$ci\$s1「 ♪    」\$s2" ]; then
 		mpd="\$cn"
 	fi
 	updateRoot=1
