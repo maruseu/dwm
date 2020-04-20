@@ -25,7 +25,7 @@ void shiftview(const Arg *arg) {
 }
 
 /* commands */
-static const char *termcmd[]  = { "tabbed", "-c", "urxvt", "-bg", "\[100\]#000000", "-embed", NULL };
+static const char *termcmd[]  = { "tabbed", "-c", "urxvt", "-embed", NULL };
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
@@ -33,17 +33,17 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
 //	"-x", "15","-y", "5","-w", "1336", NULL  };
 	NULL  };
 
-static const char *animecmd[] = { "anime.sh", "-i", "-l", "20",
+static const char *animecmd[]= { "dmenu_anime", "-i",
+	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf, "-l", "20",
+//	"-x", "15","-y", "5","-w", "1336", NULL  };
+	NULL  };
+
+static const char *logoutcmd[]= { "dmenu_logout", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
 //	"-x", "15","-y", "5","-w", "1336", NULL  };
 	NULL  };
 
-static const char *logoutcmd[]= { "logout.sh", "-i",
-	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-//	"-x", "15","-y", "5","-w", "1336", NULL  };
-	NULL  };
-
-static const char *displaycmd[]= { "menudisplay.sh", "-i",
+static const char *displaycmd[]= { "dmenu_display", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
 //	"-x", "15","-y", "5","-w", "1336", NULL  };
 	NULL  };
@@ -52,11 +52,12 @@ static Key keys[] = {
 	/* modifier           key               function        argument */
 	{ MODKEY|ShiftMask,   XK_s,             spawn,          SHCMD("rm -f /tmp/ram/clip.png ; maim -s /tmp/ram/clip.png -u ; xclip -selection clipboard -t image/png -i /tmp/ram/clip.png") },
 	{ MODKEY|ShiftMask,   XK_e,             spawn,          {.v = logoutcmd } },
-	{ MODKEY|ShiftMask,   XK_i,             spawn,          SHCMD("ibus-ch.sh") },
+	{ MODKEY|ShiftMask,   XK_i,             spawn,          SHCMD("ibus_cycle") },
 	{ MODKEY,             XK_m,             spawn,          SHCMD("urxvtc --title Music -e ncmpcpp") },
 	{ MODKEY,             XK_t,             spawn,          SHCMD("urxvtc -e tremc") },
 	{ MODKEY,             XK_f,             spawn,          SHCMD("urxvtc -e ranger") },
-	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 animeChart2.lua ansib") },
+	{ MODKEY,             XK_i,             spawn,          SHCMD("urxvtc -e watch -c -n1 animeTab ansib") },
+	{ MODKEY|ShiftMask,   XK_d,             spawn,          SHCMD("urxvtc -e watch -c -n1 devices_list") },
 	{ MODKEY,             XK_d,             spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,   XK_a,             spawn,          {.v = animecmd } },
 	{ MODKEY,             XK_Return,        spawn,          {.v = termcmd } },

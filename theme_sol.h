@@ -1,5 +1,5 @@
-#define BG "#000000"
-#define FG "#ffffff"
+#define BG "#002b37"
+#define FG "#93a1a1"
 #define HL FG
 #define DMBG BG
 #define FONT "M+ 1p:style=medium:size=8"

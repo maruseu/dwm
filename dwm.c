@@ -746,8 +746,10 @@ drawbar(Monitor *m)
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+//			drw_rect(drw, x + boxs, boxs, boxw, boxw,
+//				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+			drw_rect(drw, x +  ( boxw / 4 ) , bh - 2, w - ( ( boxw + 1 ) / 2 ), 2,
+				1,
 				urg & 1 << i);
 		x += w;
 	}

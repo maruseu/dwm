@@ -1,6 +1,6 @@
 /* appearance */
 #include <X11/XF86keysym.h>
-#include "theme_bsd.h"
+#include "theme_sol.h"
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 5;       /* snap pixel */
 //static const unsigned int gappih    = 0;       /* horiz inner gap between windows */
@@ -14,10 +14,6 @@ static const unsigned int gappov    = 40;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-//static const int vertpad            = 0;       /* vertical padding of bar */
-//static const int sidepad            = 0;       /* horizontal padding of bar */
-static const int vertpad            = 5;       /* vertical padding of bar */
-static const int sidepad            = 15;       /* horizontal padding of bar */
 
 /* tagging */
 //static const char *tags[] = {"一","二","三","四","五","六","七","八","九" };
