@@ -30,23 +30,23 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon ,
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-//	"-x", "15","-y", "5","-w", "1336", NULL  };
-	NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	NULL  };
 
 static const char *animecmd[]= { "dmenu_anime", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf, "-l", "20",
-//	"-x", "15","-y", "5","-w", "1336", NULL  };
-	NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	NULL  };
 
 static const char *logoutcmd[]= { "dmenu_logout", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-//	"-x", "15","-y", "5","-w", "1336", NULL  };
-	NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	NULL  };
 
 static const char *displaycmd[]= { "dmenu_display", "-i",
 	"-fn", dmenufont, "-nb", col_dmbg, "-nf", col_dmfg, "-sb", col_dmsb, "-sf", col_dmsf,
-//	"-x", "15","-y", "5","-w", "1336", NULL  };
-	NULL  };
+	"-x", "15","-y", "5","-w", "1336", NULL  };
+//	NULL  };
 
 static Key keys[] = {
 	/* modifier           key               function        argument */
@@ -72,8 +72,9 @@ static Key keys[] = {
 	{ MODKEY,             XK_h,             setmfact,       {.f = -0.05} },
 	{ MODKEY,             XK_l,             setmfact,       {.f = +0.05} },
 	{ MODKEY,             XK_space,         zoom,           {0} },
-	{ MODKEY,             XK_Tab,           view,           {0} },
 	{ MODKEY|ShiftMask,   XK_q,             killclient,     {0} },
+	{ MODKEY,             XK_Tab,           focusstack,     {.i = INC(+1) } },
+	{ MODKEY|ShiftMask,   XK_Tab,           focusstack,     {.i = INC(-1) } },
 	{ MODKEY|ShiftMask,   XK_space,         togglefloating, {0} },
 	STACKKEYS(            MODKEY,                           focus)
 	STACKKEYS(            MODKEY|ShiftMask,                 push)
