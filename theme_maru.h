@@ -1,4 +1,4 @@
-#define BG "#000000"
+#define BG "#111111"
 #define FG "#ffffff"
 #define HL FG
 #define DMBG BG
@@ -15,7 +15,7 @@ static const char col_dmsb[]    = HL;
 static const char col_dmsf[]    = BG;
 static const char *colors[][3]      = {
 	/*               fg      bg      border   */
-	[SchemeNorm]  =  { col_fg,   col_bg, col_bg  },
-	[SchemeSel]   =  { col_bg,   col_hl, col_hl},
+	[SchemeNorm]  =  { col_fg, col_bg, col_bg},
+	[SchemeSel]   =  { col_bg, col_hl, col_hl},
 };
 
