@@ -1,13 +1,11 @@
 #!/bin/sh
 vol="${2:-5}"
 case "$1" in
-	toggle) amixer set Master toggle ;;
+	toggle) amixer -c 1 set Master toggle ;;
 
-	dec) amixer set Master "$vol"%- ;;
+	dec) amixer -c 1 set Master "$vol"%- ;;
 
-	inc) amixer set Master "$vol"%+
+	inc) amixer -c 1 set Master "$vol"%+
 	amixer set Master unmute ;;
 esac
-spid=`cat /tmp/ram/dwmStat.pid`
-kill -USR1 $spid
-pkill -P $spid sleep
+dunst_vol

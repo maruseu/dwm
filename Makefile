@@ -44,6 +44,7 @@ install: all
 	which pactl && cp -f scripts/dvol ${DESTDIR}${PREFIX}/bin || cp -f scripts/dvol_a ${DESTDIR}${PREFIX}/bin/dvol
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dvol
+	chmod 755 ${DESTDIR}${PREFIX}/bin/dvol_a
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dstatus
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1

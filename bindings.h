@@ -120,12 +120,12 @@ static Key keys[] = {
 	  { 0,             XF86XK_Back,                shiftview,      {.i = -1} },
 	  { 0,             XF86XK_Forward,             shiftview,      {.i = +1} },
 
-	{ MODKEY|ShiftMask,XK_m,                       spawn,          SHCMD("dvol toggle") },
-	{ MODKEY,          XK_minus,                   spawn,          SHCMD("dvol dec") },
-	{ MODKEY,          XK_equal,                   spawn,          SHCMD("dvol inc") },
-	{ MODKEY|Mod1Mask, XK_minus,                   spawn,          SHCMD("mpc volume -5") },
-	{ MODKEY|Mod1Mask, XK_equal,                   spawn,          SHCMD("mpc volume +5") },
-	{ MODKEY|Mod1Mask, XK_m,                       spawn,          SHCMD("dvol mictog") },
+	{ MODKEY|ShiftMask,XK_m,                       spawn,          SHCMD("dvol_a toggle") },
+	{ MODKEY,          XK_minus,                   spawn,          SHCMD("dvol_a dec") },
+	{ MODKEY,          XK_equal,                   spawn,          SHCMD("dvol_a inc") },
+	{ MODKEY|Mod1Mask, XK_minus,                   spawn,          SHCMD("dvol dec") },
+	{ MODKEY|Mod1Mask, XK_equal,                   spawn,          SHCMD("dvol inc") },
+	{ MODKEY|Mod1Mask, XK_m,                       spawn,          SHCMD("dvol toggle") },
 
 	{ MODKEY,          XK_p,                       spawn,          {.v = displaycmd } },
 	{ 0,               XF86XK_Explorer,            spawn,          SHCMD("urxvtc --title Settings -e ~/Documents/m.a.r.u/maruSettings.sh") },
